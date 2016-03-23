@@ -1,2 +1,2 @@
-# gem
+# Gem
 Syntactic Sugar for Linear-Algebra
