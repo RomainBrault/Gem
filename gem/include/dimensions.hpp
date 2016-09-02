@@ -16,6 +16,7 @@ class Dimension<T, cv, max_cv, min_cv>
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
+    using hana_tag = long long;
 
 public:
 
@@ -94,6 +95,7 @@ class Dimension<T, cv, max_cv, min_cv> :
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
+    using hana_tag = boost::hana::integral_constant_tag<long long int>;
 
 public:
 
@@ -103,7 +105,6 @@ public:
     {
         BOOST_HANA_RUNTIME_ASSERT(rv == max_cv);
     }
-
 
     constexpr inline Dimension(const Dimension & d) noexcept
     {
@@ -124,19 +125,6 @@ public:
     {
         return boost::hana::integral_constant<T, max_cv> {};
     }
-
-    // template <typename OT>
-    // constexpr inline
-    // operator boost::hana::integral_constant<OT, cv>(void) const noexcept
-    // {
-    //     return boost::hana::integral_constant<OT, cv> {};
-    // }
-
-    // constexpr inline
-    // operator T(void) const noexcept
-    // {
-    //     return cv;
-    // }
 
     friend inline auto
     operator <<(std::ostream& os, const Dimension & d)

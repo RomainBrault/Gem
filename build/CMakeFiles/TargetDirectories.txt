@@ -5,3 +5,4 @@
 /Users/Romain/Gem/build/tests/CMakeFiles/test.headers.dir
 /Users/Romain/Gem/build/tests/CMakeFiles/tests.dir
 /Users/Romain/Gem/build/tests/CMakeFiles/tests.quick.dir
+/Users/Romain/Gem/build/tests/CMakeFiles/tests.io.print.dir

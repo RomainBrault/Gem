@@ -231,6 +231,19 @@ tests.dimensions.base/fast:
 .PHONY : tests.dimensions.base/fast
 
 #=============================================================================
+# Target rules for targets named tests.io.print
+
+# Build rule for target.
+tests.io.print: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 tests.io.print
+.PHONY : tests.io.print
+
+# fast build rule for target.
+tests.io.print/fast:
+	$(MAKE) -f tests/CMakeFiles/tests.io.print.dir/build.make tests/CMakeFiles/tests.io.print.dir/build
+.PHONY : tests.io.print/fast
+
+#=============================================================================
 # Target rules for targets named tests.main
 
 # Build rule for target.
@@ -276,6 +289,7 @@ help:
 	@echo "... test.headers"
 	@echo "... tests"
 	@echo "... tests.quick"
+	@echo "... tests.io.print"
 .PHONY : help
 
 

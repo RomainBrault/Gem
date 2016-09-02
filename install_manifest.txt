@@ -3,8 +3,6 @@
 /usr/local/include/gem/dimensions.hpp
 /usr/local/include/gem/dimensions_tuple.hpp
 /usr/local/include/gem/fwd/concept/dimensions.hpp
-/usr/local/include/gem/fwd/concept/dimensions_monoid.hpp
-/usr/local/include/gem/fwd/concept/dimensions_ring.hpp
 /usr/local/include/gem/fwd/dimensions.hpp
 /usr/local/include/gem/fwd/dimensions_tuple.hpp
 /usr/local/include/gem/gem.hpp

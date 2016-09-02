@@ -211,6 +211,21 @@ tests.dimensions.base/fast:
 .PHONY : tests.dimensions.base/fast
 
 # Convenience name for target.
+tests/CMakeFiles/tests.io.print.dir/rule:
+	cd /Users/Romain/Gem/build && $(MAKE) -f CMakeFiles/Makefile2 tests/CMakeFiles/tests.io.print.dir/rule
+.PHONY : tests/CMakeFiles/tests.io.print.dir/rule
+
+# Convenience name for target.
+tests.io.print: tests/CMakeFiles/tests.io.print.dir/rule
+
+.PHONY : tests.io.print
+
+# fast build rule for target.
+tests.io.print/fast:
+	cd /Users/Romain/Gem/build && $(MAKE) -f tests/CMakeFiles/tests.io.print.dir/build.make tests/CMakeFiles/tests.io.print.dir/build
+.PHONY : tests.io.print/fast
+
+# Convenience name for target.
 tests/CMakeFiles/tests.main.dir/rule:
 	cd /Users/Romain/Gem/build && $(MAKE) -f CMakeFiles/Makefile2 tests/CMakeFiles/tests.main.dir/rule
 .PHONY : tests/CMakeFiles/tests.main.dir/rule
@@ -267,6 +282,33 @@ dimensions/base.cpp.s:
 	cd /Users/Romain/Gem/build && $(MAKE) -f tests/CMakeFiles/tests.dimensions.base.dir/build.make tests/CMakeFiles/tests.dimensions.base.dir/dimensions/base.cpp.s
 .PHONY : dimensions/base.cpp.s
 
+io/print.o: io/print.cpp.o
+
+.PHONY : io/print.o
+
+# target to build an object file
+io/print.cpp.o:
+	cd /Users/Romain/Gem/build && $(MAKE) -f tests/CMakeFiles/tests.io.print.dir/build.make tests/CMakeFiles/tests.io.print.dir/io/print.cpp.o
+.PHONY : io/print.cpp.o
+
+io/print.i: io/print.cpp.i
+
+.PHONY : io/print.i
+
+# target to preprocess a source file
+io/print.cpp.i:
+	cd /Users/Romain/Gem/build && $(MAKE) -f tests/CMakeFiles/tests.io.print.dir/build.make tests/CMakeFiles/tests.io.print.dir/io/print.cpp.i
+.PHONY : io/print.cpp.i
+
+io/print.s: io/print.cpp.s
+
+.PHONY : io/print.s
+
+# target to generate assembly for a file
+io/print.cpp.s:
+	cd /Users/Romain/Gem/build && $(MAKE) -f tests/CMakeFiles/tests.io.print.dir/build.make tests/CMakeFiles/tests.io.print.dir/io/print.cpp.s
+.PHONY : io/print.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -310,11 +352,15 @@ help:
 	@echo "... list_install_components"
 	@echo "... tests"
 	@echo "... tests.quick"
+	@echo "... tests.io.print"
 	@echo "... test"
 	@echo "... install/local"
 	@echo "... dimensions/base.o"
 	@echo "... dimensions/base.i"
 	@echo "... dimensions/base.s"
+	@echo "... io/print.o"
+	@echo "... io/print.i"
+	@echo "... io/print.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

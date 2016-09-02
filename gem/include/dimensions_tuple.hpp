@@ -7,6 +7,7 @@
 #include <boost/hana/tuple.hpp>
 #include <boost/hana/transform.hpp>
 #include <boost/hana/fold.hpp>
+#include <boost/hana/max.hpp>
 
 #include <boost/hana/experimental/printable.hpp>
 
@@ -82,15 +83,27 @@ public:
         BOOST_HANA_CONSTEXPR_LAMBDA auto _mult_c = [](auto && acc,
                                                       auto && d)
         {
-            constexpr common_t max = std::numeric_limits<common_t>::max();
-            bool overflow = (acc > max / static_cast<common_t>(d)) &&
-                            !(acc == boost::hana::integral_c<common_t, 0>);
-            return overflow ? boost::hana::integral_c<common_t, 0> : acc * d;
+            constexpr auto max =
+                boost::hana::integral_c<common_t,
+                                        std::numeric_limits<common_t>::max()>;
+            constexpr auto m_max =
+                boost::hana::integral_c<common_t,
+                                        std::numeric_limits<common_t>::max() /
+                                        decltype(+d)::value>;
+            constexpr auto overflow =
+                boost::hana::bool_c<(acc >
+                                     std::numeric_limits<common_t>::max() /
+                                     decltype(+d)::value)>;
+            return boost::hana::eval_if(overflow, [&] { return max; },
+                                                  [&] { return acc * d; });
         };
 
-        BOOST_HANA_CONSTEXPR_LAMBDA auto val = boost::hana::fold(get_value(), _mult);
-        BOOST_HANA_CONSTEXPR_LAMBDA auto max = boost::hana::fold(get_max(), _mult_c);
-        BOOST_HANA_CONSTEXPR_LAMBDA auto min = boost::hana::fold(get_min(), _mult);
+        BOOST_HANA_CONSTEXPR_LAMBDA auto val =
+            boost::hana::fold(get_value(), _mult);
+        BOOST_HANA_CONSTEXPR_LAMBDA auto max =
+            boost::hana::fold(get_max(), _mult_c);
+        BOOST_HANA_CONSTEXPR_LAMBDA auto min =
+            boost::hana::fold(get_min(), _mult);
         return Dimension<common_t, min, max, min> { val };
     }
 

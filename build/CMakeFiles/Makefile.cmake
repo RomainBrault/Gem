@@ -107,4 +107,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "tests/CMakeFiles/test.headers.dir/DependInfo.cmake"
   "tests/CMakeFiles/tests.dir/DependInfo.cmake"
   "tests/CMakeFiles/tests.quick.dir/DependInfo.cmake"
+  "tests/CMakeFiles/tests.io.print.dir/DependInfo.cmake"
   )

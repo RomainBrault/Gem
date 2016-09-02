@@ -5,4 +5,5 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 add_test(tests.dimensions.base "/Users/Romain/Gem/build/tests/tests.dimensions.base")
+add_test(tests.io.print "/Users/Romain/Gem/build/tests/tests.io.print")
 add_test(tests.main "/Users/Romain/Gem/build/tests/tests.main")
