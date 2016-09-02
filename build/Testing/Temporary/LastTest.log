@@ -1,0 +1,34 @@
+Start testing: Jun 30 14:19 CEST
+----------------------------------------------------------
+1/2 Testing: tests.dimensions.base
+1/2 Test: tests.dimensions.base
+Command: "/Users/Romain/Gem/build/tests/tests.dimensions.base"
+Directory: /Users/Romain/Gem/build/tests
+"tests.dimensions.base" start time: Jun 30 14:19 CEST
+Output:
+----------------------------------------------------------
+Assertion failed: (max_cv >= rv), function Dimension, file /usr/local/include/gem/dimensions.hpp, line 27.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Failed.
+"tests.dimensions.base" end time: Jun 30 14:19 CEST
+"tests.dimensions.base" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: tests.main
+2/2 Test: tests.main
+Command: "/Users/Romain/Gem/build/tests/tests.main"
+Directory: /Users/Romain/Gem/build/tests
+"tests.main" start time: Jun 30 14:19 CEST
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"tests.main" end time: Jun 30 14:19 CEST
+"tests.main" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jun 30 14:19 CEST
