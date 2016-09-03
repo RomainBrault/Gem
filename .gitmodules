@@ -1,6 +1,3 @@
-[submodule "hana"]
-	path = hana
-	url = https://github.com/boostorg/hana
 [submodule "cereal"]
 	path = cereal
 	url = https://github.com/USCiLab/cereal
