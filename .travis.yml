@@ -158,7 +158,7 @@ script:
 
       if [[ "${TRAVIS_PULL_REQUEST}" == "false" && "${TRAVIS_BRANCH}" == "master" ]]; then
         # Suppress output to avoid leaking the token when the command fails
-        git clone https://ldionne:${GITHUB_TOKEN}@github.com/boostorg/hana --depth 1 --branch=gh-pages doc/html &>/dev/null
+        git clone https://RomainBrault:${GITHUB_TOKEN}@github.com/RomainBrault/Gem --depth 1 --branch=gh-pages doc/html &>/dev/null
 
         rm -rf doc/html/{search,*.png,*.css,*.js,*.html}
         cp -R build/doc/html/* doc/html/
@@ -194,7 +194,7 @@ script:
         config_slug=$(cd build && make travis_config_slug | grep 'travis_config_slug:' | cut -d ' ' -f 2)
 
         # Suppress output to avoid leaking the token when the command fails
-        git clone https://ldionne:${GITHUB_TOKEN}@github.com/boostorg/hana --depth 1 --branch=gh-pages doc/html &>/dev/null
+        git clone https://RomainBrault:${GITHUB_TOKEN}@github.com/RomainBrault/Gem --depth 1 --branch=gh-pages doc/html &>/dev/null
         rm -rf doc/html/benchmarks/${config_slug}/${compiler_slug}/
         mkdir -p doc/html/benchmarks/${config_slug}/${compiler_slug}/
         for benchmark in $(ls build/benchmark/*.json | grep -v ".erb"); do
