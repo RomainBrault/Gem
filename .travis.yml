@@ -79,7 +79,7 @@ matrix:
     # Benchmarks
     ##########################################################################
     - os: linux
-      env: BENCHMARKS=true CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release"
+      env: BENCHMARKS=true CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release CTEST_OUTPUT_ON_FAILURE=true"
       compiler: clang
 
 
@@ -127,7 +127,8 @@ before_script:
   ############################################################################
   # Go back to the root of the project and setup the build directory
   ############################################################################
-  - ./install.sh
+  - cd ${TRAVIS_BUILD_DIR}
+  - (mkdir build && cd build && cmake .. ${CMAKE_OPTIONS})
 
 
 script:
