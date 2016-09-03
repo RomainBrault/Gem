@@ -34,12 +34,6 @@ addons:
 
 cache:
   directories:
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.0
-    - ${TRAVIS_BUILD_DIR}/deps/boost-1.59.0
-    - ${TRAVIS_BUILD_DIR}/deps/boost-1.60.0
-
 
 matrix:
   exclude:
@@ -68,15 +62,15 @@ matrix:
     # Generate the documentation
     ##########################################################################
     - os: linux
-      env: DOCUMENTATION=true
+      env: DOCUMENTATION=true COMPILER=g++-6
       compiler: gcc
 
     ##########################################################################
     # Benchmarks
     ##########################################################################
     - os: linux
-      env: BENCHMARKS=true CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release CTEST_OUTPUT_ON_FAILURE=true"
-      compiler: clang
+      env: BENCHMARKS=true COMPILER=g++-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release CTEST_OUTPUT_ON_FAILURE=true"
+      compiler: gcc
 
 
 install:
@@ -86,8 +80,8 @@ install:
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
       CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
-      mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-      export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+      mkdir cmake_install_dir && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake_install_dir
+      export PATH=${DEPS_DIR}/cmake_install_dir/bin:${PATH}
     else
       if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
     fi
