@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//Path to a file.
+CEREAL_INCLUDE_DIR:PATH=/Users/Romain/Gem/cereal/include
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
@@ -170,7 +173,7 @@ GEM_ENABLE_MEMCHECK:BOOL=OFF
 GEM_ENABLE_WERROR:BOOL=ON
 
 //Include directory for the Hana library
-Hana_INCLUDE_DIR:PATH=/usr/local/include
+Hana_INCLUDE_DIR:PATH=/Users/Romain/Gem/hana/include
 
 //Value Computed by CMake
 gem_BINARY_DIR:STATIC=/Users/Romain/Gem/build
@@ -183,6 +186,8 @@ gem_SOURCE_DIR:STATIC=/Users/Romain/Gem
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: CEREAL_INCLUDE_DIR
+CEREAL_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
@@ -300,8 +305,10 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_USE_RELATIVE_PATHS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Cereal
+FIND_PACKAGE_MESSAGE_DETAILS_Cereal:INTERNAL=[/Users/Romain/Gem/cereal/include][v()]
 //Details about finding Hana
-FIND_PACKAGE_MESSAGE_DETAILS_Hana:INTERNAL=[/usr/local/include][v1.0.0(1.0)]
+FIND_PACKAGE_MESSAGE_DETAILS_Hana:INTERNAL=[/Users/Romain/Gem/hana/include][v1.0.1(1.0)]
 //Test GEM_HAS_CONCEPTS
 GEM_HAS_CONCEPTS:INTERNAL=1
 //Test GEM_HAS_FDIAGNOSTICS_COLOR

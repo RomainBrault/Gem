@@ -182,10 +182,10 @@ clean: tests/CMakeFiles/test.headers.dir/clean
 # Target rules for target tests/CMakeFiles/tests.dir
 
 # All Build rule for target.
-tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/tests.dimensions.base.dir/all
-tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/tests.io.print.dir/all
 tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/tests.main.dir/all
 tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/test.headers.dir/all
+tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/tests.dimensions.base.dir/all
+tests/CMakeFiles/tests.dir/all: tests/CMakeFiles/tests.io.print.dir/all
 	$(MAKE) -f tests/CMakeFiles/tests.dir/build.make tests/CMakeFiles/tests.dir/depend
 	$(MAKE) -f tests/CMakeFiles/tests.dir/build.make tests/CMakeFiles/tests.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/Romain/Gem/build/CMakeFiles --progress-num= "Built target tests"
@@ -313,10 +313,10 @@ clean: tests/CMakeFiles/tests.main.dir/clean
 # Target rules for target tests/CMakeFiles/tests.quick.dir
 
 # All Build rule for target.
-tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/tests.dimensions.base.dir/all
-tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/tests.io.print.dir/all
 tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/tests.main.dir/all
 tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/test.headers.dir/all
+tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/tests.dimensions.base.dir/all
+tests/CMakeFiles/tests.quick.dir/all: tests/CMakeFiles/tests.io.print.dir/all
 	$(MAKE) -f tests/CMakeFiles/tests.quick.dir/build.make tests/CMakeFiles/tests.quick.dir/depend
 	$(MAKE) -f tests/CMakeFiles/tests.quick.dir/build.make tests/CMakeFiles/tests.quick.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/Romain/Gem/build/CMakeFiles --progress-num= "Built target tests.quick"

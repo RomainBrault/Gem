@@ -12,7 +12,7 @@ auto main(void) -> int
     /* CHECK DIMENSION */
     {
         auto m = MatrixXd(0_c, 0_c);
-        BOOST_HANA_CONSTANT_CHECK(m.n_dims == 2_c);
+        BOOST_HANA_CONSTANT_CHECK(m.order == 2_c);
     }
 
     {

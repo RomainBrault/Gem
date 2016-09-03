@@ -10,8 +10,13 @@
 #include <boost/hana/drop_back.hpp>
 #include <boost/hana/for_each.hpp>
 #include <boost/hana/greater.hpp>
+#include <boost/hana/experimental/printable.hpp>
+
+#include <cereal/cereal.hpp>
+#include <cereal/access.hpp>
 
 #include <gem/dimensions_tuple.hpp>
+#include <gem/cereal/hana_binder.hpp>
 
 namespace gem {
 
@@ -26,8 +31,10 @@ public:
     using dimension_tuple_t = DimensionTuple<false, dims...>;
     using dimension_tuple_common_t = typename dimension_tuple_t::common_t;
 
-    template<typename n_dtype, GemDimension... n_dims>
+    template<typename n_dtype, GemDimension... order>
     friend class TensorBase;
+
+    friend class cereal::access;
 
 public:
     static constexpr
@@ -37,7 +44,7 @@ public:
     boost::hana::type<data_t> data_type {};
 
     static constexpr
-    boost::hana::llong<sizeof...(dims)> n_dims {};
+    boost::hana::llong<sizeof...(dims)> order {};
 
     dimension_tuple_t dim;
 
@@ -71,14 +78,14 @@ public:
     }
 
     constexpr inline auto rows(void) const noexcept
-        -> const std::enable_if_t<(n_dims > 0_c),
+        -> const std::enable_if_t<(order > 0_c),
                                   decltype(dim[GEM_START_IDX])> &
     {
         return dim[GEM_START_IDX];
     }
 
     constexpr inline auto cols(void) const noexcept
-        -> const std::enable_if_t<(n_dims > 1_c),
+        -> const std::enable_if_t<(order > 1_c),
                                   decltype(dim[GEM_START_IDX + 1_c])> &
     {
         return dim[GEM_START_IDX + 1_c];
@@ -144,12 +151,34 @@ public:
         os << boost::hana::back(tensor.dim);
         return os << "}";
     }
+
+private:
+
+    template<class Archive>
+    auto save(Archive & archive) const -> void
+    {
+        archive(CEREAL_NVP(order), dim[1_c]);
+    }
+
+    template<class Archive>
+    auto load(Archive & archive) -> void
+    {
+
+    }
+
+    // template <class Archive>
+    // void serialize(Archive & ar)
+    // {
+    //   // ar(CEREAL_NVP(order));
+    //     ar(order);
+    // }
+
 };
 
 template <typename dtype, GemDimension... dims>
 constexpr
 boost::hana::llong<sizeof...(dims)>
-TensorBase<dtype, dims...>::n_dims;
+TensorBase<dtype, dims...>::order;
 
 template <typename dtype, GemDimension... dims>
 constexpr boost::hana::type<typename TensorBase<dtype, dims...>::type_t>

@@ -8,6 +8,8 @@
 #include <gem/concept/dimensions_ring.hpp>
 #include <gem/concept/dimensions_monoid.hpp>
 
+#include <cereal/access.hpp>
+
 namespace gem {
 
 GemValidRuntimeDimension{T, cv, max_cv, min_cv}
@@ -17,6 +19,8 @@ public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
     using hana_tag = long long;
+
+    friend class cereal::access;
 
 public:
 
@@ -79,6 +83,14 @@ public:
     }
 
 private:
+
+    template <class Archive>
+    void serialize(Archive & ar)
+    {
+      ar(cv, max_cv, min_cv);
+    }
+
+private:
     T _run_time;
 
 public:
@@ -96,6 +108,8 @@ public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
     using hana_tag = boost::hana::integral_constant_tag<long long int>;
+
+    friend class cereal::access;
 
 public:
 
@@ -132,6 +146,14 @@ public:
     {
         os << d.get_value();
         return os;
+    }
+
+private:
+
+    template <class Archive>
+    void serialize(Archive & ar)
+    {
+      ar(cv, max_cv, min_cv);
     }
 
 public:
@@ -243,5 +265,13 @@ template <GemDimension T>
 struct is_arithmetic<T> : true_type { };
 
 }
+
+namespace cereal
+{
+  template <class Archive>
+  struct specialize<Archive, MyDerived,
+                    cereal::specialization::member_load_save> {};
+  // cereal no longer has any ambiguity when serializing MyDerived
+} // namespace cereal
 
 #endif // DIMENSIONS_HPP_INCLUDED

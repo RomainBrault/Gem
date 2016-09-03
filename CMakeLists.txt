@@ -65,11 +65,20 @@ gem_append_flag(GEM_HAS_CONCEPTS                   -fconcepts)
 ##############################################################################
 file(GLOB includes RELATIVE ${PROJECT_SOURCE_DIR}/gem/include/ *.hpp)
 
+set(Hana_ROOT ${PROJECT_SOURCE_DIR}/hana)
 find_package(Hana 1.0 REQUIRED)
 if(Hana_FOUND)
     include_directories(${Hana_INCLUDE_DIRS})
 elseif()
     # todo: remove Hana required and use package download
+endif()
+
+set(Cereal_ROOT ${PROJECT_SOURCE_DIR}/cereal)
+find_package(Cereal REQUIRED)
+if(CEREAL_FOUND)
+    include_directories(${CEREAL_INCLUDE_DIRS})
+elseif()
+    # todo: remove Cereal required and use package download
 endif()
 
 include_directories(${includes})

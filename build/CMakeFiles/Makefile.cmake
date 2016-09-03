@@ -76,6 +76,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.3.2/CMakeSystem.cmake"
   "CMakeFiles/feature_tests.cxx"
   "../cmake/CheckCxxCompilerSupport.cmake"
+  "../cmake/FindCereal.cmake"
   "../cmake/FindHana.cmake"
   "../cmake/TestHeaders.cmake"
   "../cmake_uninstall.cmake.in"

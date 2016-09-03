@@ -7,7 +7,6 @@
 #include <boost/hana/tuple.hpp>
 #include <boost/hana/transform.hpp>
 #include <boost/hana/fold.hpp>
-#include <boost/hana/max.hpp>
 
 #include <boost/hana/experimental/printable.hpp>
 
