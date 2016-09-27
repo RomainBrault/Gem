@@ -20,14 +20,14 @@ concept bool GemUnsignedIntegral = GemIntegral<T> && !GemSignedIntegral<T>;
 
 template <class T, T cv, T max, T min>
 concept bool GemValidDimension =
-    GemUnsignedIntegral<T> && (max >= cv) && (cv >= min);;
+    GemUnsignedIntegral<T> && (max >= cv) && (cv >= min);
 
 template <class T, T cv, T max, T min>
 concept bool GemValidRuntimeDimension =
-    GemUnsignedIntegral<T> && (max > min) && (max >= cv) && (cv >= min);;
+    GemUnsignedIntegral<T> && (max > min) && (max >= cv) && (cv >= min);
 
 template <class T, T cv, T max, T min>
 concept bool GemValidCompileTimeDimension =
-    GemUnsignedIntegral<T> && (max == min) && (max >= cv) && (cv >= min);;
+    GemUnsignedIntegral<T> && (max == min) && (max >= cv) && (cv >= min);
 
 #endif // CONCEPTS_DIMENSIONS_HPP_INCLUDED

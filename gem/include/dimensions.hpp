@@ -4,11 +4,96 @@
 #include <boost/hana/type.hpp>
 #include <boost/hana/integral_constant.hpp>
 
-#include <gem/fwd/dimensions.hpp>
-#include <gem/concept/dimensions_ring.hpp>
-#include <gem/concept/dimensions_monoid.hpp>
+#include <cereal/cereal.hpp>
+#include <cereal/details/util.hpp>
 
-#include <cereal/access.hpp>
+#include <gem/fwd/dimensions.hpp>
+#include <gem/concept/dimensions_tag.hpp>
+#include <gem/concept/dimensions_to.hpp>
+
+namespace gem {
+
+GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+void save(auto & archive,
+          const gem::Dimension<T, cv, max_cv, min_cv> & m)
+{
+    archive(cereal::make_nvp("dimension_type",
+                             cereal::util::demangle(typeid(unsigned long long).name())),
+            cereal::make_nvp("hint", 2),
+            cereal::make_nvp("max", 2),
+            cereal::make_nvp("min", 2),
+            cereal::make_nvp("real", 2));
+}
+
+GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+void load(auto & archive,
+          gem::Dimension<T, cv, max_cv, min_cv> & m,
+          std::uint32_t version)
+{
+
+}
+
+GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+void save(auto & archive,
+          const gem::Dimension<T, cv, max_cv, min_cv> & m,
+          std::uint32_t version)
+{
+    archive(cereal::make_nvp("dimension_type",
+                             gem::demangle(typeid(T).name())),
+            cereal::make_nvp("hint", cv),
+            cereal::make_nvp("max", max_cv),
+            cereal::make_nvp("min", min_cv),
+            cereal::make_nvp("real", m.get_value()));
+}
+
+GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+void load(auto & archive,
+          gem::Dimension<T, cv, max_cv, min_cv> & m,
+          std::uint32_t const version)
+{
+
+}
+
+} // namespace gem
+
+namespace cereal {
+// template<class Archive, typename T, T cv, T max_cv, T min_cv>
+// struct specialize<Archive, gem::Dimension<T, cv, max_cv, min_cv>,
+//                   cereal::specialization::member_load_save> {};
+// cereal no longer has any ambiguity when serializing Dimension
+
+template<class Archive, typename T, T cv, T max_cv, T min_cv>
+struct specialize<Archive, gem::Dimension<T, cv, max_cv, min_cv>,
+                  specialization::non_member_load_save> {};
+
+namespace detail {
+
+GemValidDimension {T, cv, max_cv, min_cv}
+struct Version<gem::Dimension<T, cv, max_cv, min_cv>>
+{
+    static const std::uint32_t version;
+
+    static std::uint32_t registerVersion(void) {
+        ::cereal::detail::StaticObject<Versions>::getInstance().mapping.emplace(
+            std::type_index(
+                typeid(gem::Dimension<T, cv, max_cv, min_cv>)).hash_code(),
+                GEM_VERSION);
+        return GEM_VERSION;
+    }
+    static void unused() { (void)version; }
+}; /* end Version */
+
+GemValidDimension {T, cv, max_cv, min_cv}
+const std::uint32_t Version<gem::Dimension<T, cv, max_cv, min_cv>>::version =
+    Version<gem::Dimension<T, cv, max_cv, min_cv>>::registerVersion();
+
+} // namespace detail
+
+} // namespace cereal
+
+
+
+
 
 namespace gem {
 
@@ -18,12 +103,14 @@ class Dimension<T, cv, max_cv, min_cv>
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
-    using hana_tag = long long;
+    using hana_tag = dimension_tag<T, max_cv, min_cv>;
 
-    friend class cereal::access;
+    static constexpr boost::hana::type<dim_t> type {};
+    static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
+    static constexpr boost::hana::integral_constant<dim_t, max_cv> max {};
+    static constexpr boost::hana::integral_constant<dim_t, min_cv> min {};
 
 public:
-
     constexpr inline Dimension(void) = delete;
 
     constexpr inline Dimension(const T & rv) noexcept :
@@ -47,25 +134,15 @@ public:
 
     }
 
-    constexpr inline auto get_value(void) const noexcept
+    constexpr inline auto value(void) const noexcept
     {
         return _run_time;
     }
 
-    constexpr inline auto set_value(const auto & val) const noexcept
+    constexpr inline auto value(const auto & val) noexcept
     {
         _run_time = static_cast<T>(val);
         return *this;
-    }
-
-    static constexpr inline auto get_min(void) noexcept
-    {
-        return boost::hana::integral_constant<T, min_cv> {};
-    }
-
-    static constexpr inline auto get_max(void) noexcept
-    {
-        return boost::hana::integral_constant<T, max_cv> {};
     }
 
     constexpr inline operator T(void) const noexcept
@@ -83,22 +160,24 @@ public:
     }
 
 private:
-
-    template <class Archive>
-    void serialize(Archive & ar)
-    {
-      ar(cv, max_cv, min_cv);
-    }
-
-private:
     T _run_time;
-
-public:
-    static constexpr boost::hana::type<T> type {};
 };
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
 constexpr boost::hana::type<T> Dimension<T, cv, max_cv, min_cv>::type;
+
+GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, cv> Dimension<T, cv, max_cv, min_cv>::hint;
+
+GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, max_cv> Dimension<T, cv, max_cv, min_cv>::max;
+
+GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, min_cv> Dimension<T, cv, max_cv, min_cv>::min;
+
+
+
+
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
 class Dimension<T, cv, max_cv, min_cv> :
@@ -107,38 +186,30 @@ class Dimension<T, cv, max_cv, min_cv> :
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
-    using hana_tag = boost::hana::integral_constant_tag<long long int>;
+    using hana_tag = dimension_tag<T, max_cv, min_cv>;
 
-    friend class cereal::access;
+    static constexpr boost::hana::type<dim_t> type {};
+    static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
+    static constexpr boost::hana::integral_constant<dim_t, max_cv> max {};
+    static constexpr boost::hana::integral_constant<dim_t, min_cv> min {};
 
 public:
 
     constexpr inline Dimension(void) noexcept = default;
 
-    constexpr inline Dimension(const T & rv) noexcept
-    {
-        BOOST_HANA_RUNTIME_ASSERT(rv == max_cv);
-    }
+    constexpr inline Dimension(const T &) noexcept = delete;
 
     constexpr inline Dimension(const Dimension & d) noexcept
     {
 
     }
 
-    static constexpr inline auto get_value(void) noexcept
+    static constexpr inline auto value(void) noexcept
     {
-        return boost::hana::integral_constant<T, max_cv> {};
+        return hint;
     }
 
-    static constexpr inline auto get_min(void) noexcept
-    {
-        return boost::hana::integral_constant<T, max_cv> {};
-    }
-
-    static constexpr inline auto get_max(void) noexcept
-    {
-        return boost::hana::integral_constant<T, max_cv> {};
-    }
+    constexpr inline auto value(const auto & val) const = delete;
 
     friend inline auto
     operator <<(std::ostream& os, const Dimension & d)
@@ -147,21 +218,19 @@ public:
         os << d.get_value();
         return os;
     }
-
-private:
-
-    template <class Archive>
-    void serialize(Archive & ar)
-    {
-      ar(cv, max_cv, min_cv);
-    }
-
-public:
-    static constexpr boost::hana::type<T> type {};
 };
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
 constexpr boost::hana::type<T> Dimension<T, cv, max_cv, min_cv>::type;
+
+GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, cv> Dimension<T, cv, max_cv, min_cv>::hint;
+
+GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, max_cv> Dimension<T, cv, max_cv, min_cv>::max;
+
+GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+constexpr boost::hana::integral_constant<T, min_cv> Dimension<T, cv, max_cv, min_cv>::min;
 
 /* Constraint friendly (compile time) dimension constructors.
    Takes care of cast. */
@@ -169,7 +238,7 @@ template <typename T, T cv>
 constexpr inline auto
 Dim(const T & value) noexcept
 {
-    static_assert("Incompatible type");
+    BOOST_HANA_CONSTANT_CHECK_MSG(0_c, "Incompatible type");
 }
 
 template <GemIntegral T>
@@ -178,8 +247,9 @@ Dim(const T& value)
 {
     using ust = std::make_unsigned_t<T>;
     constexpr ust max {std::numeric_limits<std::make_unsigned_t<T>>::max()};
-    constexpr ust min {std::numeric_limits<std::make_unsigned_t<T>>::min()};
-    return Dimension<ust, min, max, min> { static_cast<ust>(value) };
+    return Dimension<ust, (max - 1) / 2 + 1, max, 1> {
+        static_cast<ust>(value)
+    };
 }
 
 template <GemIntegral T, T cv_max>
@@ -188,8 +258,9 @@ Dim(const T& value,
     const boost::hana::integral_constant<T, cv_max>& max)
 {
     using ust = std::make_unsigned_t<T>;
-    constexpr ust min {std::numeric_limits<std::make_unsigned_t<T>>::min()};
-    return Dimension<ust, min, max, min> { static_cast<ust>(value) };
+    return Dimension<ust, (cv_max - 1) / 2 + 1, cv_max, 1> {
+        static_cast<ust>(value)
+    };
 }
 
 
@@ -200,7 +271,9 @@ Dim(const T& value,
     const boost::hana::integral_constant<T, cv_min>& min)
 {
     using ust = std::make_unsigned_t<T>;
-    return Dimension<ust, cv_min, cv_max, cv_min> { static_cast<ust>(value) };
+    return Dimension<ust, (cv_max - cv_min) / 2 + cv_min, cv_max, cv_min> {
+        static_cast<ust>(value)
+    };
 }
 
 template <GemIntegral T, T cv>
@@ -261,17 +334,9 @@ struct is_gem_compile_time_dimension_impl<gem::Dimension<T, cv,
 
 namespace std {
 
-template <GemDimension T>
+template<GemDimension T>
 struct is_arithmetic<T> : true_type { };
 
-}
-
-namespace cereal
-{
-  template <class Archive>
-  struct specialize<Archive, MyDerived,
-                    cereal::specialization::member_load_save> {};
-  // cereal no longer has any ambiguity when serializing MyDerived
-} // namespace cereal
+} // namespace std
 
 #endif // DIMENSIONS_HPP_INCLUDED

@@ -1,21 +1,22 @@
 #ifndef DIMENSIONS_TUPLE_HPP_INCLUDED
 #define DIMENSIONS_TUPLE_HPP_INCLUDED
 
+#define BOOST_HANA_CONFIG_ENABLE_STRING_UDL
+
 #include <type_traits>
 
 #include <boost/hana/minus.hpp>
 #include <boost/hana/tuple.hpp>
 #include <boost/hana/transform.hpp>
 #include <boost/hana/fold.hpp>
-
-#include <boost/hana/experimental/printable.hpp>
+#include <boost/hana/string.hpp>
 
 #include <gem/dimensions.hpp>
 #include <gem/fwd/dimensions_tuple.hpp>
 
 namespace gem {
 
-template <bool T_flag, GemDimension... dims>
+template <bool T_flag, long long n_con, long long n_cov, GemDimension... dims>
 class DimensionTuple :
     public boost::hana::tuple<dims...>
 {
@@ -35,14 +36,17 @@ private:
 
 
 public:
-    using type_t = DimensionTuple<T_flag, dims...>;
+    using type_t = DimensionTuple<T_flag, n_con, n_cov, dims...>;
     using base_t = boost::hana::tuple<dims...>;
     using common_t = typename gem_dim_common_type<dims...>::type;
 
+    friend class cereal::access;
+
 public:
 
-    static_assert(sizeof...(dims) > 0,
-                  "At least one dimension must be specified.");
+    static constexpr BOOST_HANA_CONSTANT_CHECK_MSG(
+        (0_c < boost::hana::llong_c<sizeof...(dims)>),
+        "At least one dimension must be specified.");
 
     using base_t::tuple;
 
@@ -103,7 +107,10 @@ public:
             boost::hana::fold(get_max(), _mult_c);
         BOOST_HANA_CONSTEXPR_LAMBDA auto min =
             boost::hana::fold(get_min(), _mult);
-        return Dimension<common_t, min, max, min> { val };
+        return Dimension<common_t,
+                         (boost::hana::value(max) - boost::hana::value(min))
+                         / 2 + boost::hana::value(min),
+                         max, min> { val };
     }
 
     constexpr inline auto operator [](const auto & idx) const noexcept
@@ -122,6 +129,31 @@ public:
             decltype(base_t::operator[] (idx - GEM_START_IDX))> &
     {
         return base_t::operator[] (idx - GEM_START_IDX);
+    }
+
+private:
+    template<class Archive>
+    auto save(Archive & archive) const -> void
+    {
+        // archive(cereal::make_size_tag(n_con));
+        boost::hana::llong_c<n_con>.times.with_index(
+            [this, &archive](auto index) {
+                // TODO: make the string concatenation compile time.
+                archive(cereal::make_nvp("contravariant",
+                                         this->operator[] (GEM_START_IDX + index)));
+        });
+        boost::hana::llong_c<n_cov>.times.with_index(
+            [this, &archive](auto index) {
+                // TODO: make the string concatenation compile time.
+                archive(cereal::make_nvp("covariant",
+                                         this->operator[] (GEM_START_IDX + boost::hana::llong_c<n_con> + index)));
+        });
+    }
+
+    template<class Archive>
+    auto load(Archive & archive) -> void
+    {
+
     }
 };
 

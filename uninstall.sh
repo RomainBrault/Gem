@@ -1,3 +1,3 @@
 #! /bin/bash
 
-xargs rm < install_manifest.txt
+xargs rm -rf < install_manifest.txt

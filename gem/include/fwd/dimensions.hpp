@@ -3,7 +3,7 @@
 
 #include <limits>
 
-#include <gem/fwd/concept/dimensions.hpp>
+#include <gem/concept/dimensions.hpp>
 
 using namespace boost::hana::literals;
 
@@ -14,18 +14,6 @@ class Dimension;
 
 template <typename T>
 constexpr inline auto Dim(const T& value);
-
-template <typename T>
-struct runtime_dimension_tag
-{
-    using type = T;
-};
-
-template <typename T>
-struct compile_time_dimension_tag
-{
-    using type = T;
-};
 
 namespace detail {
 

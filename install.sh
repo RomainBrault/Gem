@@ -7,15 +7,17 @@ verbose=0
 cflag=false
 mflag=false
 iflag=false
+jflag=8
 fflag=false
 pflag=false
 tflag=false
 
-while getopts 'cmifptv' flag; do
+while getopts 'cmifptvj:' flag; do
   case "${flag}" in
     c) cflag=true ;;
     m) mflag=true ;;
 	i) iflag=true ;;
+    j) jflag="${OPTARG}" ;;
 	f) fflag=true ;;
 	p) pflag=true ;;
 	t) tflag=true ;;
@@ -28,6 +30,8 @@ done
 if $fflag ;
 	then
 		rm -rf build
+        rm -rf /usr/local/include/gem
+        # sh uninstall.sh || true
 fi
 
 [ -d build ] || mkdir build
@@ -39,21 +43,21 @@ if $cflag ;
 fi
 if $mflag;
 	then
-		make -j8 VERBOSE=${verbose}
+		make -j${jflag} VERBOSE=${verbose}
 fi
 if $iflag ;
 	then
-		make -j8 install
+		make -j${jflag} install
 		cp install_manifest.txt ..
 fi
 if $tflag ;
 	then
-		if [[ -n $iflag ]] ;
+		if ! $iflag ;
 			then
-				make -j8 install
+				make -j${jflag} install
 				cp install_manifest.txt ..
 		fi
-		env CTEST_OUTPUT_ON_FAILURE=${verbose} make -j8 check
+		env CTEST_OUTPUT_ON_FAILURE=${verbose} make -j${jflag} check
 fi
 
 cd ..

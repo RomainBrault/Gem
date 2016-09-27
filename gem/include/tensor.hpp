@@ -5,13 +5,13 @@
 
 namespace gem {
 
-template <typename dtype, class... dims>
+template <typename dtype, long long n_con, long long n_cov, class... dims>
 class Tensor :
-    public TensorBase<dtype, dims...>
+    public TensorBase<dtype, n_con, n_cov, dims...>
 {
 
 public:
-    using base_t = TensorBase<dtype, dims...>;
+    using base_t = TensorBase<dtype, n_con, n_cov, dims...>;
 
 public:
 
@@ -27,11 +27,11 @@ private:
 
 
 template <typename R, typename C>
-constexpr inline auto MatrixXd(const R & rows = 0, const C & cols = 0)
+constexpr inline auto MatrixXd(const R & rows = 1_c, const C & cols = 1_c)
 {
     auto dim1 = Dim(rows);
     auto dim2 = Dim(cols);
-    return TensorBase<double, decltype(dim1), decltype(dim2)>(dim1, dim2);
+    return TensorBase<double, 1, 1, decltype(dim1), decltype(dim2)>(dim1, dim2);
 }
 
 } // namespace gem
