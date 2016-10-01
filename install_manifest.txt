@@ -1,6 +1,8 @@
 /usr/local/include/gem/cereal/hana_binder.hpp
 /usr/local/include/gem/concept/dimensions.hpp
+/usr/local/include/gem/concept/dimensions_comparable.hpp
 /usr/local/include/gem/concept/dimensions_monoid.hpp
+/usr/local/include/gem/concept/dimensions_orderable.hpp
 /usr/local/include/gem/concept/dimensions_ring.hpp
 /usr/local/include/gem/concept/dimensions_tag.hpp
 /usr/local/include/gem/concept/dimensions_to.hpp

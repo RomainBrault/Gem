@@ -21,7 +21,6 @@ while getopts 'cmifptvj:' flag; do
 	f) fflag=true ;;
 	p) pflag=true ;;
 	t) tflag=true ;;
-    # f) files="${OPTARG}" ;;
     v) verbose=1 ;;
     *) error "Unexpected option ${flag}" ;;
   esac

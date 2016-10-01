@@ -10,6 +10,9 @@
 #include <gem/fwd/dimensions.hpp>
 #include <gem/concept/dimensions_tag.hpp>
 #include <gem/concept/dimensions_to.hpp>
+#include <gem/concept/dimensions_comparable.hpp>
+#include <gem/concept/dimensions_orderable.hpp>
+#include <gem/concept/dimensions_monoid.hpp>
 
 namespace gem {
 
@@ -145,12 +148,6 @@ public:
         return *this;
     }
 
-    constexpr inline operator T(void) const noexcept
-    {
-        // do NOT use get_value() here!
-        return this->_run_time;
-    }
-
     friend inline auto
     operator <<(std::ostream& os, const Dimension & d)
         -> std::ostream&
@@ -180,8 +177,7 @@ constexpr boost::hana::integral_constant<T, min_cv> Dimension<T, cv, max_cv, min
 
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-class Dimension<T, cv, max_cv, min_cv> :
-    public boost::hana::llong<max_cv>
+class Dimension<T, cv, max_cv, min_cv>
 {
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
@@ -238,7 +234,7 @@ template <typename T, T cv>
 constexpr inline auto
 Dim(const T & value) noexcept
 {
-    BOOST_HANA_CONSTANT_CHECK_MSG(0_c, "Incompatible type");
+    BOOST_HANA_CONSTANT_CHECK_MSG(boost::hana::false_c, "Incompatible type");
 }
 
 template <GemIntegral T>
