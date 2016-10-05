@@ -10,9 +10,19 @@ auto main(void) -> int
 {
 
     {
+        auto d1 = Dim(2);
+        BOOST_HANA_RUNTIME_CHECK(equal(d1, 2));
+        BOOST_HANA_RUNTIME_CHECK(d1 ^eq^ 2);
+        BOOST_HANA_RUNTIME_CHECK(not_equal(d1, 3));
+        BOOST_HANA_RUNTIME_CHECK(d1 ^neq^ 3);
+    }
+
+    {
         // auto d1 = Dim(2_c);
-        // BOOST_HANA_CONSTANT_CHECK(to<integral_constant_tag<unsigned long long>>(d1) ^eq^ to<integral_constant_tag<unsigned long long>>(2_c));
-        // BOOST_HANA_CONSTANT_CHECK(d1 ^eq^ 2_c);
+        // BOOST_HANA_RUNTIME_CHECK(equal(d1, 2));
+        // BOOST_HANA_RUNTIME_CHECK(d1 ^eq^ 2);
+        // BOOST_HANA_RUNTIME_CHECK(not_equal(d1, 3));
+        // BOOST_HANA_RUNTIME_CHECK(d1 ^neq^ 3);
     }
 
     {

@@ -17,14 +17,50 @@ struct equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
     }
 };
 
+template<typename T1, T1 cv_max1, T1 cv_min1, GemIntegral T2>
+struct equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>, T2>
+{
+    static constexpr auto apply(const auto& d1, const T2& d2)
+    {
+        return d1.value() == d2;
+    }
+};
+
+template<GemIntegral T1, typename T2, T2 cv_max2, T2 cv_min2>
+struct equal_impl<T1, gem::dimension_tag<T2, cv_max2, cv_min2>>
+{
+    static constexpr auto apply(const T1& d1, const auto& d2)
+    {
+        return d1 == d2.value();
+    }
+};
+
 template<typename T1, T1 cv_max1, T1 cv_min1,
          typename T2, T2 cv_max2, T2 cv_min2>
 struct not_equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
-                  gem::dimension_tag<T2, cv_max2, cv_min2>>
+                      gem::dimension_tag<T2, cv_max2, cv_min2>>
 {
     static constexpr auto apply(const auto& d1, const auto& d2)
     {
         return d1.value() != d2.value();
+    }
+};
+
+template<typename T1, T1 cv_max1, T1 cv_min1, GemIntegral T2>
+struct not_equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>, T2>
+{
+    static constexpr auto apply(const auto& d1, const T2& d2)
+    {
+        return d1.value() != d2;
+    }
+};
+
+template<GemIntegral T1, typename T2, T2 cv_max2, T2 cv_min2>
+struct not_equal_impl<T1, gem::dimension_tag<T2, cv_max2, cv_min2>>
+{
+    static constexpr auto apply(const T1& d1, const auto& d2)
+    {
+        return d1 != d2.value();
     }
 };
 

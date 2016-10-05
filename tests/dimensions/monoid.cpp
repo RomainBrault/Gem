@@ -25,7 +25,9 @@ auto main(void) -> int
         BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^le^ d5);
         BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^ge^ d4);
 
-        // BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^eq^ 4);
+        BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^eq^ 4);
+        // BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^eq^ 4_c);
+
         BOOST_HANA_RUNTIME_CHECK((d2 + d1) ^eq^ d6);
         BOOST_HANA_RUNTIME_CHECK((d2 + d1) ^neq^ d7);
         BOOST_HANA_RUNTIME_CHECK((d1 + d2) ^le^ d8);

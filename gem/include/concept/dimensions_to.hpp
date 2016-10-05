@@ -65,9 +65,9 @@ struct to_impl<gem::dimension_tag<T1, max_cv1, min_cv1>, // To.
 {
     static inline auto
     apply(const T2 d)
-        -> gem::Dimension<T1, (max_cv1 + min_cv1) / 2, max_cv1, min_cv1>
+        -> gem::Dimension<T1, min_cv1, max_cv1, min_cv1>
     {
-        return gem::Dimension<T1, (max_cv1 + min_cv1) / 2,
+        return gem::Dimension<T1, min_cv1,
                               max_cv1, min_cv1> {d};
     }
 };
