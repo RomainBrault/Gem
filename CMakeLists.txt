@@ -9,13 +9,13 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # installation during which the version would be written to this header.
 ##############################################################################
 foreach(level MAJOR MINOR PATCH)
-    file(STRINGS gem/include/version.hpp
+    file(STRINGS include/gem/version.hpp
                  _define_${level}
                  REGEX "#define GEM_${level}_VERSION")
     string(REGEX MATCH "([0-9]+)" _version_${level} "${_define_${level}}")
 endforeach()
 
-set(Gem_VERSION_STRING "${_version_MAJOR}.${_version_MINOR}.${_version_PATCH}")
+set(gem_VERSION_STRING "${_version_MAJOR}.${_version_MINOR}.${_version_PATCH}")
 project(gem VERSION ${Gem_VERSION_STRING} LANGUAGES CXX)
 
 # Perform checks to make sure we support the current compiler
@@ -24,9 +24,9 @@ include(CheckCxxCompilerSupport)
 ##############################################################################
 # Setup CMake options
 ##############################################################################
-option(GEM_ENABLE_WERROR
+option(gem_ENABLE_WERROR
        "Fail and stop if a warning is triggered." ON)
-option(GEM_ENABLE_MEMCHECK
+option(gem_ENABLE_MEMCHECK
        "Run the unit tests and examples under Valgrind if it is found." OFF)
 
 ##############################################################################
@@ -42,30 +42,28 @@ macro(gem_append_flag testname flag)
 endmacro()
 
 # Compiler flags controlled by CMake options above
-if (GEM_ENABLE_WERROR)
-    gem_append_flag(GEM_HAS_WERROR -Werror)
-    gem_append_flag(GEM_HAS_WX -WX)
+if (gem_ENABLE_WERROR)
+    gem_append_flag(gem_HAS_WERROR -Werror)
+    gem_append_flag(gem_HAS_WX -WX)
 endif()
 
 # Other compiler flags
-gem_append_flag(GEM_HAS_FDIAGNOSTICS_COLOR         -fdiagnostics-color)
-gem_append_flag(GEM_HAS_FTEMPLATE_BACKTRACE_LIMIT  -ftemplate-backtrace-limit=0)
-gem_append_flag(GEM_HAS_PEDANTIC                   -pedantic)
-gem_append_flag(GEM_HAS_STDCXX17                   -std=c++1z)
-gem_append_flag(GEM_HAS_QUNUSED_ARGUMENTS          -Qunused-arguments)
-gem_append_flag(GEM_HAS_W                          -W)
-gem_append_flag(GEM_HAS_WALL                       -Wall)
-gem_append_flag(GEM_HAS_WEXTRA                     -Wextra)
-gem_append_flag(GEM_HAS_WNO_UNUSED_LOCAL_TYPEDEFS  -Wno-unused-local-typedefs)
-gem_append_flag(GEM_HAS_WWRITE_STRINGS             -Wwrite-strings)
-gem_append_flag(GEM_HAS_CONCEPTS                   -fconcepts)
+gem_append_flag(gem_HAS_FDIAGNOSTICS_COLOR         -fdiagnostics-color)
+gem_append_flag(gem_HAS_FTEMPLATE_BACKTRACE_LIMIT  -ftemplate-backtrace-limit=0)
+gem_append_flag(gem_HAS_PEDANTIC                   -pedantic)
+gem_append_flag(gem_HAS_STDCXX17                   -std=c++1z)
+gem_append_flag(gem_HAS_QUNUSED_ARGUMENTS          -Qunused-arguments)
+gem_append_flag(gem_HAS_W                          -W)
+gem_append_flag(gem_HAS_WALL                       -Wall)
+gem_append_flag(gem_HAS_WEXTRA                     -Wextra)
+gem_append_flag(gem_HAS_WNO_UNUSED_LOCAL_TYPEDEFS  -Wno-unused-local-typedefs)
+gem_append_flag(gem_HAS_WWRITE_STRINGS             -Wwrite-strings)
+gem_append_flag(gem_HAS_CONCEPTS                   -fconcepts)
 
 ##############################################################################
 # Setup include paths. More include paths can be added in subdirectories.
 ##############################################################################
-file(GLOB includes RELATIVE ${PROJECT_SOURCE_DIR}/gem/include/ *.hpp)
-
-set(Hana_ROOT ${PROJECT_SOURCE_DIR}/hana)
+set(Hana_ROOT ${gem_SOURCE_DIR}/hana)
 find_package(Hana 1.0 REQUIRED)
 if(Hana_FOUND)
     include_directories(${Hana_INCLUDE_DIRS})
@@ -73,15 +71,15 @@ elseif()
     # todo: remove Hana required and use package download
 endif()
 
-set(Cereal_ROOT ${PROJECT_SOURCE_DIR}/cereal)
+set(Cereal_ROOT ${gem_SOURCE_DIR}/cereal)
 find_package(Cereal REQUIRED)
 if(CEREAL_FOUND)
     include_directories(${CEREAL_INCLUDE_DIRS})
 elseif()
     # todo: remove Cereal required and use package download
 endif()
-
-include_directories(${includes})
+MESSAGE(${gem_SOURCE_DIR}/include)
+include_directories(${gem_SOURCE_DIR}/include)
 
 add_library(gem INTERFACE)
 target_sources(gem INTERFACE ${includes})
@@ -150,12 +148,12 @@ add_subdirectory(tests)
 # Setup the 'install' target.
 # This copies the whole content of include/ to ${CMAKE_INSTALL_PREFIX}.
 ##############################################################################
-install(TARGETS gem
-        ARCHIVE  DESTINATION lib
-        LIBRARY  DESTINATION lib
-        RUNTIME  DESTINATION bin)  # This is for Windows
-install(DIRECTORY gem/include/ DESTINATION include/gem
+install(DIRECTORY include/ DESTINATION include/
         PATTERN ".DS_Store" EXCLUDE)
+
+# We also install an optional pkg-config file.
+# configure_file(cmake/hana.pc.in hana.pc @ONLY)
+# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hana.pc DESTINATION lib/pkgconfig)
 
 ##############################################################################
 # Setup the 'uninstall' target.

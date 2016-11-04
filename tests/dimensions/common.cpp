@@ -2,9 +2,9 @@
 #include <boost/hana/assert.hpp>
 #include <boost/hana/core.hpp>
 
-#include <gem/gem.hpp>
-
 #include <limits>
+
+#include <gem/gem.hpp>
 
 using namespace gem;
 using namespace boost::hana;

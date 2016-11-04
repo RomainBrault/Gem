@@ -2,6 +2,9 @@
 #define DIMENSIONS_COMMON_HPP_INCLUDED
 
 #include <type_traits>
+#include <algorithm>
+
+#include <boost/hana/core/common.hpp>
 
 #include <gem/concept/dimensions.hpp>
 

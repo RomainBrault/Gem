@@ -60,7 +60,7 @@ struct to_impl<integral_constant_tag<T1>, // To.
     embedding<is_embedded<T2, T1>::value>
 {
     static constexpr inline auto
-    apply(const gem::Dimension<T2, cv, cv, cv>& d)
+    apply(const gem::Dimension<T2, cv, cv, cv>&)
         -> integral_constant<T1, cv>
     {
         return integral_c<T1, cv>;

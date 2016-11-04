@@ -6,6 +6,8 @@
 #include <boost/hana/greater.hpp>
 #include <boost/hana/greater_equal.hpp>
 
+#include <gem/concept/dimensions.hpp>
+
 namespace boost::hana {
 
 GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}

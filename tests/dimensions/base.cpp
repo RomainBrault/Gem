@@ -1,8 +1,8 @@
 #include <cassert>
 #include <boost/hana/assert.hpp>
+#include <iostream>
 
 #include <gem/gem.hpp>
-#include <iostream>
 
 using namespace gem;
 using namespace boost::hana;

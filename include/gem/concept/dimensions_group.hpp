@@ -30,8 +30,8 @@ public:
     apply(const gem::Dimension<T1, cv1, max1, min1>& d1,
           const gem::Dimension<T2, cv2, max2, min2>& d2)
     {
-        BOOST_HANA_RUNTIME_CHECK(d1.value() >= d2.value(),
-                                 "Dimension underflow...");
+        BOOST_HANA_RUNTIME_CHECK_MSG(d1.value() >= d2.value(),
+                                     "Dimension underflow...");
         return gem::Dimension<ctype, safe_sub<ctype>(cv1, cv2),
                                      safe_sub<ctype>(max1, min2),
                                      safe_sub<ctype>(min1, max2)> {d1.value() -
@@ -48,8 +48,8 @@ private:
 
 public:
     static constexpr auto
-    apply(const gem::Dimension<T1, cv1, cv1, cv1> & d1,
-          const gem::Dimension<T2, cv2, cv2, cv2> & d2)
+    apply(const gem::Dimension<T1, cv1, cv1, cv1> &,
+          const gem::Dimension<T2, cv2, cv2, cv2> &)
     {
         constexpr auto c = integral_c<ctype, cv1>;
         constexpr auto m = integral_c<ctype, cv2>;

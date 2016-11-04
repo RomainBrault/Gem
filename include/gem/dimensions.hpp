@@ -23,9 +23,7 @@ GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
 void save(auto & archive,
           const gem::Dimension<T, cv, max_cv, min_cv> & m)
 {
-    archive(cereal::make_nvp("dimension_type",
-                             cereal::util::demangle(typeid(unsigned long long).name())),
-            cereal::make_nvp("hint", 2),
+    archive(cereal::make_nvp("hint", 2),
             cereal::make_nvp("max", 2),
             cereal::make_nvp("min", 2),
             cereal::make_nvp("real", 2));
@@ -44,9 +42,7 @@ void save(auto & archive,
           const gem::Dimension<T, cv, max_cv, min_cv> & m,
           std::uint32_t version)
 {
-    archive(cereal::make_nvp("dimension_type",
-                             gem::demangle(typeid(T).name())),
-            cereal::make_nvp("hint", cv),
+    archive(cereal::make_nvp("hint", cv),
             cereal::make_nvp("max", max_cv),
             cereal::make_nvp("min", min_cv),
             cereal::make_nvp("real", m.value()));
@@ -200,7 +196,7 @@ public:
 
     constexpr inline Dimension(const T &) noexcept = delete;
 
-    constexpr inline Dimension(const Dimension & d) noexcept
+    constexpr inline Dimension(const Dimension &) noexcept
     {
 
     }
@@ -283,7 +279,7 @@ Dim(const T& value,
 
 template <GemIntegral T, T cv>
 constexpr inline auto
-Dim(const boost::hana::integral_constant<T, cv> & value) noexcept
+Dim(const boost::hana::integral_constant<T, cv> &) noexcept
 {
     return Dimension<typename std::make_unsigned_t<T>, cv, cv, cv> {};
 }

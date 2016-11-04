@@ -42,9 +42,10 @@ public:
     apply(const gem::Dimension<T1, cv1, max1, min1>& d1,
           const gem::Dimension<T2, cv2, max2, min2>& d2)
     {
-        BOOST_HANA_RUNTIME_CHECK(d1.value() <
-                                 std::numeric_limits<ctype>::max() - d2.value(),
-                                 "Dimension overflow...");
+        BOOST_HANA_RUNTIME_CHECK_MSG(d1.value() <
+                                     std::numeric_limits<ctype>::max() -
+                                     d2.value(),
+                                     "Dimension overflow...");
         return gem::Dimension<ctype, safe_add<ctype>(cv1, cv2),
                                      safe_add<ctype>(max1, max2),
                                      safe_add<ctype>(min1, min2)> {d1.value() +
@@ -61,8 +62,8 @@ private:
 
 public:
     static constexpr auto
-    apply(const gem::Dimension<T1, cv1, cv1, cv1> & d1,
-          const gem::Dimension<T2, cv2, cv2, cv2> & d2)
+    apply(const gem::Dimension<T1, cv1, cv1, cv1> &,
+          const gem::Dimension<T2, cv2, cv2, cv2> &)
     {
         constexpr auto c = integral_c<ctype, cv1>;
         constexpr auto m = integral_c<ctype,

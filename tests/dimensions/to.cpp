@@ -4,8 +4,6 @@
 
 #include <gem/gem.hpp>
 
-#include <limits>
-
 using namespace gem;
 using namespace boost::hana;
 

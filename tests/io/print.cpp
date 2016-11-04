@@ -1,14 +1,14 @@
 #include <cassert>
 #include <boost/hana/assert.hpp>
 
-#include <gem/gem.hpp>
-
 #include <string>
 #include <fstream>
 
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/xml.hpp>
 #include <cereal/archives/json.hpp>
+
+#include <gem/gem.hpp>
 
 using namespace gem;
 using namespace boost::hana;
