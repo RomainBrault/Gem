@@ -10,137 +10,91 @@
 
 #include <gem/fwd/dimensions.hpp>
 #include <gem/concept/dimensions.hpp>
-#include <gem/concept/dimensions_tag.hpp>
-
-namespace std {
-    template<class T, class Compare>
-    constexpr auto clamp(const T& v, const T& lo, const T& hi, Compare comp)
-        -> const T&
-    {
-        return assert(!comp(hi, lo)), comp(v, lo) ? lo : comp(hi, v) ? hi : v;
-    }
-
-    template<class T>
-    constexpr auto clamp(const T& v, const T& lo, const T& hi)
-        -> const T&
-    {
-        return clamp( v, lo, hi, std::less<>() );
-    }
-}
 
 namespace boost::hana {
 
-template<typename T1, /* To */
-         typename T2, T2 max_cv2, T2 min_cv2 /* From */>
-struct to_impl<T1, // To.
-               gem::dimension_tag<T2, max_cv2, min_cv2>, // From.
-               when<is_convertible<T2, T1>::value &&
-                    (max_cv2 <= std::numeric_limits<T1>::max()) &&
-                    (min_cv2 >= std::numeric_limits<T1>::min())>> :
-    embedding<is_embedded<T2, T1>::value &&
-              (std::numeric_limits<T1>::max() >=
-                std::numeric_limits<T2>::max()) &&
-              (std::numeric_limits<T1>::min() <=
-                std::numeric_limits<T2>::min())>
+GemConvertibleDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct to_impl<gem::Dimension<T1, cv1, max1, min1>, // To.
+               gem::Dimension<T2, cv2, max2, min2>> : // From.
+    embedding<is_embedded<T2, T1>::value && (max2 <= max1) && (min2 >= min1)>
 {
-    template<T2 cv>
-    static inline auto
-    apply(const gem::Dimension<T2, cv, max_cv2, min_cv2> d)
-        -> T1
+    static constexpr inline auto
+    apply(const gem::Dimension<T2, cv2, max2, min2>& d)
+        -> gem::Dimension<T1, cv1, max1, min1>
+    {
+        return gem::Dimension<T1, cv1, max1, min1> {d.value()};
+    }
+};
+
+template<GemUnsignedIntegral T1, T1 cv1, GemUnsignedIntegral T2, T2 cv2>
+struct to_impl<gem::Dimension<T1, cv1, cv1, cv1>, // To.
+               gem::Dimension<T2, cv2, cv2, cv2>, // From.
+               when<(cv1 == cv2)>> :
+    embedding<is_embedded<T2, T1>::value>
+{
+    static constexpr inline auto
+    apply(const gem::Dimension<T2, cv2, cv2, cv2>& d)
+        -> gem::Dimension<T1, cv1, cv1, cv1>
+    {
+        return gem::Dimension<T1, cv1, cv1, cv1> {};
+    }
+};
+
+template<GemIntegral T1, GemUnsignedIntegral T2, T2 cv2, T2 max2, T2 min2>
+struct to_impl<T1, // To.
+               gem::Dimension<T2, cv2, max2, min2>> : // From.
+    embedding<is_embedded<T2, T1>::value &&
+              (std::numeric_limits<T1>::max() >= max2) &&
+              (std::numeric_limits<T1>::min() <= min2)>
+{
+    static constexpr inline auto
+    apply(const gem::Dimension<T2, cv2, max2, min2>& d) -> T1
     {
         return d.value();
     }
 };
 
-template<typename T1, T1 max_cv1, T1 min_cv1 /* To */,
-         GemIntegral T2 /* From */>
-struct to_impl<gem::dimension_tag<T1, max_cv1, min_cv1>, // To.
-               T2, // From.
-               when<is_convertible<T2, T1>::value>> :
-    embedding<is_embedded<T2, T1>::value &&
-              (std::numeric_limits<T1>::max() >=
-                std::numeric_limits<T2>::max()) &&
-              (std::numeric_limits<T1>::min() <=
-                std::numeric_limits<T2>::min())>
-{
-    static inline auto
-    apply(const T2 d)
-        -> gem::Dimension<T1, min_cv1, max_cv1, min_cv1>
-    {
-        return gem::Dimension<T1, min_cv1,
-                              max_cv1, min_cv1> {d};
-    }
-};
-
-template<typename T1, /* To */
-         typename T2, T2 max_cv2, T2 min_cv2 /* From */>
+template<GemIntegral T1, GemUnsignedIntegral T2, T2 cv>
 struct to_impl<integral_constant_tag<T1>, // To.
-               gem::dimension_tag<T2, max_cv2, min_cv2>, // From.
-               when<is_convertible<T2, T1>::value &&
-                    (max_cv2 <= std::numeric_limits<T1>::max()) &&
-                    (min_cv2 >= std::numeric_limits<T1>::min())>> :
-    embedding<is_embedded<T2, T1>::value &&
-              (std::numeric_limits<T1>::max() >=
-                std::numeric_limits<T2>::max()) &&
-              (std::numeric_limits<T1>::min() <=
-                std::numeric_limits<T2>::min())>
+               gem::Dimension<T2, cv, cv, cv>> : // From.
+    embedding<is_embedded<T2, T1>::value>
 {
-    template<T2 cv>
-    static inline auto
-    apply(const gem::Dimension<T2, cv, max_cv2, min_cv2> d)
+    static constexpr inline auto
+    apply(const gem::Dimension<T2, cv, cv, cv>& d)
         -> integral_constant<T1, cv>
     {
-        return to<integral_constant_tag<T1>>(d.value());
+        return integral_c<T1, cv>;
     }
 };
 
-/* Convert compile time dimension to a runtime dimension as well as runtime
-   to runtime */
-template<typename T1, T1 max_cv1, T1 min_cv1 /* To */,
-         typename T2, T2 max_cv2, T2 min_cv2 /* From */>
-struct to_impl<gem::dimension_tag<T1, max_cv1, min_cv1>, // To.
-               gem::dimension_tag<T2, max_cv2, min_cv2>, // From.
-               when<is_convertible<T2, T1>::value &&
-                    (max_cv2 <= std::numeric_limits<T1>::max()) &&
-                    (min_cv2 >= std::numeric_limits<T1>::min())>> :
+template<GemUnsignedIntegral T1, T1 cv, T1 max, T1 min, GemIntegral T2>
+struct to_impl<gem::Dimension<T1, cv, max, min>, // To.
+               T2>: // From.
     embedding<is_embedded<T2, T1>::value &&
               (std::numeric_limits<T1>::max() >=
-                std::numeric_limits<T2>::max()) &&
+               std::numeric_limits<T2>::max()) &&
               (std::numeric_limits<T1>::min() <=
-                std::numeric_limits<T2>::min())>
+               std::numeric_limits<T2>::min())>
 {
-    template<T2 cv>
-    static inline auto
-    apply(const gem::Dimension<T2, cv, max_cv2, min_cv2> d)
-        -> gem::Dimension<T1, std::clamp<T1>(cv, min_cv1, max_cv1),
-                          max_cv1, min_cv1>
+    static constexpr inline auto
+    apply(const T2& d) -> gem::Dimension<T1, cv, max, min>
     {
-        return gem::Dimension<T1, std::clamp<T1>(cv, min_cv1, max_cv1),
-                              max_cv1, min_cv1> {d.value()};
+        return gem::Dimension<T1, cv, max, min> {d};
     }
 };
 
-
-// Convert compile time dimension to a compile time dimension.
-template<typename T1, T1 cv1, /* To */
-         typename T2, T2 max_cv2, T2 min_cv2 /* From */>
-struct to_impl<gem::dimension_tag<T1, cv1, cv1>, // To.
-               gem::dimension_tag<T2, max_cv2, min_cv2>, // From.
-               when<is_convertible<T2, T1>::value &&
-                    (max_cv2 <= std::numeric_limits<T1>::max()) &&
-                    (min_cv2 >= std::numeric_limits<T1>::min())>> :
+template<GemUnsignedIntegral T1, T1 cv, T1 max, T1 min, GemIntegral T2>
+struct to_impl<gem::Dimension<T1, cv, max, min>, // To.
+               boost::hana::integral_constant<T2, cv>>: // From.
     embedding<is_embedded<T2, T1>::value &&
-              (std::numeric_limits<T1>::max() >=
-                std::numeric_limits<T2>::max()) &&
-              (std::numeric_limits<T1>::min() <=
-                std::numeric_limits<T2>::min())>
+              (max >= std::numeric_limits<T2>::max()) &&
+              (min <= std::numeric_limits<T2>::min())>
 {
-    template<T2 cv>
-    static inline auto
-    apply(const gem::Dimension<T2, cv, max_cv2, min_cv2> d)
-        -> gem::Dimension<T1, cv1, cv1, cv1>
+    static constexpr inline auto
+    apply(const boost::hana::integral_constant<T2, cv>& d)
+        -> gem::Dimension<T1, cv, max, min>
     {
-        return gem::Dimension<T1, cv1, cv1, cv1> {};
+        return gem::Dimension<T1, cv, max, min> {d};
     }
 };
 

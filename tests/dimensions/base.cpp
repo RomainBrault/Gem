@@ -2,6 +2,7 @@
 #include <boost/hana/assert.hpp>
 
 #include <gem/gem.hpp>
+#include <iostream>
 
 using namespace gem;
 using namespace boost::hana;
@@ -9,84 +10,64 @@ using namespace boost::hana;
 auto main(void) -> int
 {
 
-//     /* CHECK DIMENSION */
-//     {
-//         auto m = MatrixXd(1_c, 1_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.order == 2_c);
-//     }
+    /* CHECK DIMENSION */
+    {
+        auto m = MatrixXd(1_u, 1_u);
+        BOOST_HANA_CONSTANT_CHECK(m.order ^eq^ 2_u);
+    }
 
-//     {
-//         auto m = MatrixXd(1, 2);
-//         BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX      ] == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX + 1_c] == 2);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2);
-//     }
+    {
+        auto m = MatrixXd(1, 2);
 
-//     {
-//         auto m = MatrixXd(1_c, 2);
-//         BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX      ] == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX + 1_c] == 2);
-//         BOOST_HANA_CONSTANT_CHECK(m.rows() == 1_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2);
-//     }
+        BOOST_HANA_RUNTIME_CHECK(m.dim[GEM_START_IDX      ] ^eq^ 1u);
+        BOOST_HANA_RUNTIME_CHECK(m.dim[GEM_START_IDX + 1_u] ^eq^ 2u);
+        BOOST_HANA_RUNTIME_CHECK(m.cols() ^eq^ 2u);
+        BOOST_HANA_RUNTIME_CHECK(m.cols() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK(m.rows() ^eq^ 1u);
+        BOOST_HANA_RUNTIME_CHECK(m.rows() ^eq^ 1_u);
+        BOOST_HANA_RUNTIME_CHECK(m.size() ^eq^ 2u);
+        BOOST_HANA_RUNTIME_CHECK(m.size() ^eq^ 2_u);
+    }
 
-//     {
-//         auto m = MatrixXd(1, 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX      ] == 1  );
-//         BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX + 1_c] == 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.cols() == 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2);
-//     }
+    {
+        auto m = MatrixXd(1_u, 2);
 
-//     {
-//         auto m = MatrixXd(1_c, 2_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX      ] == 1_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX + 1_c] == 2_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.rows() == 1_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.cols() == 2_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.rows() == 1);
-//         BOOST_HANA_RUNTIME_CHECK (m.cols() == 2);
-//     }
+        BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX      ] ^eq^ 1_u);
+        BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX + 1_u] ^eq^ 2_u);
+        BOOST_HANA_CONSTANT_CHECK(m.rows() ^eq^ 1_u);
+        BOOST_HANA_RUNTIME_CHECK (m.rows() ^eq^ 1u);
+        BOOST_HANA_RUNTIME_CHECK (m.cols() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.cols() ^eq^ 2u);
+        BOOST_HANA_RUNTIME_CHECK (m.size() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.size() ^eq^ 2u);
+    }
 
-//     /* CHECK SIZE */
-//     {
-//         auto m = MatrixXd(2_c, 2_c);
-//         BOOST_HANA_CONSTANT_CHECK(m.size() == Dim(4_c));
-//         BOOST_HANA_RUNTIME_CHECK (m.size() == Dim(4));
-//         BOOST_HANA_CONSTANT_CHECK(m.size() == 4_c);
-//         BOOST_HANA_RUNTIME_CHECK (m.size() == 4);
-//     }
+    {
+        auto m = MatrixXd(1, 2_u);
 
-//     {
-//         auto m = MatrixXd(2, 2);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4_c));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4_c);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4);
-//     }
+        BOOST_HANA_RUNTIME_CHECK (m.dim[GEM_START_IDX      ] ^eq^ 1_u);
+        BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX + 1_u] ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.rows() ^eq^ 1_u);
+        BOOST_HANA_RUNTIME_CHECK (m.rows() ^eq^ 1u);
+        BOOST_HANA_CONSTANT_CHECK(m.cols() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.cols() ^eq^ 2u);
+        BOOST_HANA_RUNTIME_CHECK (m.size() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.size() ^eq^ 2u);
+    }
 
-//     {
-//         auto m = MatrixXd(2, 2_c);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4_c));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4_c);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4);
-//     }
 
-//     {
-//         auto m = MatrixXd(2_c, 2);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4_c));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == Dim(4));
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4_c);
-//         BOOST_HANA_RUNTIME_CHECK(m.size() == 4);
-//     }
+    {
+        auto m = MatrixXd(1_u, 2_u);
+
+        BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX      ] ^eq^ 1_u);
+        BOOST_HANA_CONSTANT_CHECK(m.dim[GEM_START_IDX + 1_u] ^eq^ 2_u);
+        BOOST_HANA_CONSTANT_CHECK(m.rows() ^eq^ 1_u);
+        BOOST_HANA_RUNTIME_CHECK (m.rows() ^eq^ 1u);
+        BOOST_HANA_CONSTANT_CHECK(m.cols() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.cols() ^eq^ 2u);
+        BOOST_HANA_CONSTANT_CHECK(m.size() ^eq^ 2_u);
+        BOOST_HANA_RUNTIME_CHECK (m.size() ^eq^ 2u);
+    }
 
     return 0;
 }

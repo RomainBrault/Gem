@@ -8,10 +8,9 @@
 
 namespace boost::hana {
 
-template<typename T1, T1 cv_max1, T1 cv_min1,
-         typename T2, T2 cv_max2, T2 cv_min2>
-struct less_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
-                  gem::dimension_tag<T2, cv_max2, cv_min2>>
+GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct less_impl<gem::Dimension<T1, cv1, max1, min1>,
+                 gem::Dimension<T2, cv2, max2, min2>>
 {
     static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
     {
@@ -19,10 +18,9 @@ struct less_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
     }
 };
 
-template<typename T1, T1 cv_max1, T1 cv_min1,
-         typename T2, T2 cv_max2, T2 cv_min2>
-struct less_equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
-                  gem::dimension_tag<T2, cv_max2, cv_min2>>
+GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct less_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
+                       gem::Dimension<T2, cv2, max2, min2>>
 {
     static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
     {
@@ -30,10 +28,9 @@ struct less_equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
     }
 };
 
-template<typename T1, T1 cv_max1, T1 cv_min1,
-         typename T2, T2 cv_max2, T2 cv_min2>
-struct greater_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
-                  gem::dimension_tag<T2, cv_max2, cv_min2>>
+GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct greater_impl<gem::Dimension<T1, cv1, max1, min1>,
+                    gem::Dimension<T2, cv2, max2, min2>>
 {
     static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
     {
@@ -41,10 +38,9 @@ struct greater_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
     }
 };
 
-template<typename T1, T1 cv_max1, T1 cv_min1,
-         typename T2, T2 cv_max2, T2 cv_min2>
-struct greater_equal_impl<gem::dimension_tag<T1, cv_max1, cv_min1>,
-                  gem::dimension_tag<T2, cv_max2, cv_min2>>
+GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct greater_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
+                          gem::Dimension<T2, cv2, max2, min2>>
 {
     static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
     {

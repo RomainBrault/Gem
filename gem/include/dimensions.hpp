@@ -7,12 +7,15 @@
 #include <cereal/cereal.hpp>
 #include <cereal/details/util.hpp>
 
+#include <gem/version.hpp>
 #include <gem/fwd/dimensions.hpp>
-#include <gem/concept/dimensions_tag.hpp>
 #include <gem/concept/dimensions_to.hpp>
+#include <gem/concept/dimensions_common.hpp>
 #include <gem/concept/dimensions_comparable.hpp>
 #include <gem/concept/dimensions_orderable.hpp>
 #include <gem/concept/dimensions_monoid.hpp>
+#include <gem/concept/dimensions_group.hpp>
+#include <gem/concept/dimensions_ring.hpp>
 
 namespace gem {
 
@@ -46,7 +49,7 @@ void save(auto & archive,
             cereal::make_nvp("hint", cv),
             cereal::make_nvp("max", max_cv),
             cereal::make_nvp("min", min_cv),
-            cereal::make_nvp("real", m.get_value()));
+            cereal::make_nvp("real", m.value()));
 }
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
@@ -106,7 +109,6 @@ class Dimension<T, cv, max_cv, min_cv>
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
-    using hana_tag = dimension_tag<T, max_cv, min_cv>;
 
     static constexpr boost::hana::type<dim_t> type {};
     static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
@@ -152,7 +154,7 @@ public:
     operator <<(std::ostream& os, const Dimension & d)
         -> std::ostream&
     {
-        os << d.get_value();
+        os << d.value();
         return os;
     }
 
@@ -161,16 +163,20 @@ private:
 };
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::type<T> Dimension<T, cv, max_cv, min_cv>::type;
+constexpr boost::hana::type<T>
+    Dimension<T, cv, max_cv, min_cv>::type;
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, cv> Dimension<T, cv, max_cv, min_cv>::hint;
+constexpr boost::hana::integral_constant<T, cv>
+    Dimension<T, cv, max_cv, min_cv>::hint;
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, max_cv> Dimension<T, cv, max_cv, min_cv>::max;
+constexpr boost::hana::integral_constant<T, max_cv>
+    Dimension<T, cv, max_cv, min_cv>::max;
 
 GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, min_cv> Dimension<T, cv, max_cv, min_cv>::min;
+constexpr boost::hana::integral_constant<T, min_cv>
+    Dimension<T, cv, max_cv, min_cv>::min;
 
 
 
@@ -182,7 +188,6 @@ class Dimension<T, cv, max_cv, min_cv>
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
-    using hana_tag = dimension_tag<T, max_cv, min_cv>;
 
     static constexpr boost::hana::type<dim_t> type {};
     static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
@@ -211,22 +216,26 @@ public:
     operator <<(std::ostream& os, const Dimension & d)
         -> std::ostream&
     {
-        os << d.get_value();
+        os << d.value();
         return os;
     }
 };
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::type<T> Dimension<T, cv, max_cv, min_cv>::type;
+constexpr boost::hana::type<T>
+    Dimension<T, cv, max_cv, min_cv>::type;
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, cv> Dimension<T, cv, max_cv, min_cv>::hint;
+constexpr boost::hana::integral_constant<T, cv>
+    Dimension<T, cv, max_cv, min_cv>::hint;
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, max_cv> Dimension<T, cv, max_cv, min_cv>::max;
+constexpr boost::hana::integral_constant<T, max_cv>
+    Dimension<T, cv, max_cv, min_cv>::max;
 
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, min_cv> Dimension<T, cv, max_cv, min_cv>::min;
+constexpr boost::hana::integral_constant<T, min_cv>
+    Dimension<T, cv, max_cv, min_cv>::min;
 
 /* Constraint friendly (compile time) dimension constructors.
    Takes care of cast. */

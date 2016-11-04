@@ -5,11 +5,9 @@
 
 #include <gem/concept/dimensions.hpp>
 
-using namespace boost::hana::literals;
-
 namespace gem {
 
-GemValidDimension{T, cv, max_cv, min_cv}
+template <typename T, T cv, T max_cv, T min_cv>
 class Dimension;
 
 template <typename T>

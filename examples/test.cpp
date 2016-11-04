@@ -1,6 +1,6 @@
 // #include <iostream>
-// #include <typeinfo>
-// #include <boost/hana/experimental/printable.hpp>
+#include <typeinfo>
+#include <boost/hana/experimental/printable.hpp>
 
 // #define USE_
 #include <gem/tensor.hpp>
@@ -35,22 +35,23 @@ int main(void) {
     auto m = MatrixXd(10_c, 20_c);
     // auto m2 = MatrixXd(20, 10);
 
-    // for (long long i = 0; i < 15'000'000'000; ++i) {
+    // for (long long i = 0; i < 15000000000; ++i) {
     // 	m = m.transpose();
+    //     m = m.transpose();
     // }
     // (100000_c).times(m.transpose());
-    // std::cout << m.dim[1_c] << std::endl;
-    // std::cout << m.dim[2_c] << std::endl;
+    // std::cout << m.dim[1_u] << std::endl;
+    // std::cout << m.dim[2_u] << std::endl;
     // std::cout << print(m.transpose()) << std::endl;
 
     // m2 = std::move(m);
     // std::cout << m.transpose() << std::endl;
     // std::cout << typeid(m.size()).name() << std::endl;
-    // std::cout << m.size() << std::endl;
+    std::cout << m.size() << std::endl;
     // std::cout << print(m.size().type) << std::endl;
  //    std::cout << m << std::endl;
  //    std::cout << m2<< std::endl;
- //    // constexpr auto m2(m);
+    // constexpr auto m2(m);
 
  //    // std::cout << sizeof(m.dim[0_c].type) << std::endl;
  //    std::cout << sizeof(m2) << std::endl;

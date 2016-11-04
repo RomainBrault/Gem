@@ -20,49 +20,57 @@ auto safe_add(const T & v1, const T & v2)
         std::numeric_limits<T>::max();
 }
 
-template<typename T, T cv_max, T cv_min>
-struct zero_impl<gem::dimension_tag<T, cv_max, cv_min>>
+GemValidDimension {T, cv, max, min}
+struct zero_impl<gem::Dimension<T, cv, max, min>>
 {
     static constexpr auto apply(void)
-        -> gem::Dimension<std::make_unsigned_t<T>, 0, 0, 0>
+        -> gem::Dimension<T, 0, 0, 0>
     {
         return {};
     }
 };
 
-template<typename T, T cv1, T cv2>
-struct plus_impl<gem::dimension_tag<T, cv1, cv1>,
-                 gem::dimension_tag<T, cv2, cv2>>
+GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+struct plus_impl<gem::Dimension<T1, cv1, max1, min1>,
+                 gem::Dimension<T2, cv2, max2, min2>>
 {
-    static constexpr auto apply(const gem::Dimension<T, cv1, cv1, cv1> & d1,
-                                const gem::Dimension<T, cv2, cv2, cv2> & d2)
-        -> gem::Dimension<T, cv1 + cv2, cv1 + cv2, cv1 + cv2>
+private:
+    using ctype = typename boost::hana::common<T1, T2>::type;
+
+public:
+    static constexpr auto
+    apply(const gem::Dimension<T1, cv1, max1, min1>& d1,
+          const gem::Dimension<T2, cv2, max2, min2>& d2)
     {
-        constexpr auto c = integral_c<T, cv1>;
-        constexpr auto m = integral_c<T, std::numeric_limits<T>::max() - cv2>;
-        BOOST_HANA_CONSTANT_CHECK_MSG(c < m, "Dimension overflow...");
-        constexpr auto s = cv1 + cv2;
-        return gem::Dimension<T, s, s, s> {};
+        BOOST_HANA_RUNTIME_CHECK(d1.value() <
+                                 std::numeric_limits<ctype>::max() - d2.value(),
+                                 "Dimension overflow...");
+        return gem::Dimension<ctype, safe_add<ctype>(cv1, cv2),
+                                     safe_add<ctype>(max1, max2),
+                                     safe_add<ctype>(min1, min2)> {d1.value() +
+                                                                   d2.value()};
     }
 };
 
-template<typename T, T cv_max1, T cv_min1, T cv_max2, T cv_min2>
-struct plus_impl<gem::dimension_tag<T, cv_max1, cv_min1>,
-                 gem::dimension_tag<T, cv_max2, cv_min2>>
+template<typename T1, T1 cv1, typename T2, T2 cv2>
+struct plus_impl<gem::Dimension<T1, cv1, cv1, cv1>,
+                 gem::Dimension<T2, cv2, cv2, cv2>>
 {
-    template<T cv1, T cv2>
-    static constexpr auto apply(const gem::Dimension<T, cv1,
-                                                        cv_max1, cv_min1> & d1,
-                                const gem::Dimension<T, cv2,
-                                                        cv_max2, cv_min2> & d2)
-        -> gem::Dimension<T, safe_add(cv1, cv2),
-                             safe_add(cv_max1, cv_max2),
-                             safe_add(cv_min1, cv_min2)>
+private:
+    using ctype = typename boost::hana::common<T1, T2>::type;
+
+public:
+    static constexpr auto
+    apply(const gem::Dimension<T1, cv1, cv1, cv1> & d1,
+          const gem::Dimension<T2, cv2, cv2, cv2> & d2)
     {
-        return gem::Dimension<T, safe_add(cv1, cv2),
-                                 safe_add(cv_max1, cv_max2),
-                                 safe_add(cv_min1, cv_min2)> {d1.value() +
-                                                              d2.value()};
+        constexpr auto c = integral_c<ctype, cv1>;
+        constexpr auto m = integral_c<ctype,
+                                      std::numeric_limits<ctype>::max() - cv2>;
+        BOOST_HANA_CONSTANT_CHECK_MSG(c < m, "Dimension overflow...");
+        constexpr ctype s = static_cast<ctype>(cv1) +
+                            static_cast<ctype>(cv2);
+        return gem::Dimension<ctype, s, s, s> {};
     }
 };
 

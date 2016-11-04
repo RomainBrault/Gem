@@ -1,7 +1,7 @@
 #! /bin/bash
 
 set -e
-export CXX=g++-6
+export CXX=/usr/local/gcc-7/bin/g++
 
 verbose=0
 cflag=false

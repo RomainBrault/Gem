@@ -48,13 +48,13 @@ public:
     boost::hana::type<data_t> data_type {};
 
     static constexpr
-    boost::hana::llong<sizeof...(dims)> order {};
+    boost::hana::ullong<sizeof...(dims)> order {};
 
     static constexpr
-    boost::hana::llong<n_con> contravariants {};
+    boost::hana::ullong<n_con> contravariants {};
 
     static constexpr
-    boost::hana::llong<n_cov> covariants {};
+    boost::hana::ullong<n_cov> covariants {};
 
     dimension_tuple_t dim;
 
@@ -63,10 +63,10 @@ public:
         "Contravariants and covariants must add up to the order "
         "(number of dimensions)");
     static constexpr BOOST_HANA_CONSTANT_CHECK_MSG(
-        0_c <= contravariants,
+        0_u <= contravariants,
         "The number of contravariants must be positive");
     static constexpr  BOOST_HANA_CONSTANT_CHECK_MSG(
-        0_c <= covariants,
+        0_u <= covariants,
         "The number of covariants must be positive");
 
 public:
@@ -74,13 +74,13 @@ public:
     TensorBase(void) = delete;
 
     constexpr inline TensorBase(const dims&... d) noexcept :
-        dim {d...}
+        dim(d...)
     {
 
     }
 
     constexpr inline TensorBase(dims&&... d) noexcept :
-        dim {std::forward<dims>(d)...}
+        dim(std::forward<dims>(d)...)
     {
 
     }
@@ -93,23 +93,23 @@ public:
     }
 
     constexpr inline TensorBase(TensorBase && tensor) noexcept :
-        dim {std::move(tensor.dim)}
+        dim(std::move(tensor.dim))
     {
 
     }
 
     constexpr inline auto rows(void) const noexcept
-        -> const std::enable_if_t<(order > 0_c),
+        -> const std::enable_if_t<(order > 0_u),
                                   decltype(dim[GEM_START_IDX])> &
     {
         return dim[GEM_START_IDX];
     }
 
     constexpr inline auto cols(void) const noexcept
-        -> const std::enable_if_t<(order > 1_c),
-                                  decltype(dim[GEM_START_IDX + 1_c])> &
+        -> const std::enable_if_t<(order > 1_u),
+                                  decltype(dim[GEM_START_IDX + 1_u])> &
     {
-        return dim[GEM_START_IDX + 1_c];
+        return dim[GEM_START_IDX + 1_u];
     }
 
     constexpr inline auto size(void) const noexcept
@@ -153,11 +153,10 @@ public:
 
     constexpr inline auto transpose(void) const noexcept
     {
-        return boost::hana::unpack(boost::hana::reverse(dim),
-            BOOST_HANA_CONSTEXPR_LAMBDA [](auto... args) {
-                return TensorBase<dtype, n_cov, n_con,
-                                  decltype(args)...>(args...);
-            });
+        constexpr auto construct_ = [](auto... args) {
+            return TensorBase<dtype, n_cov, n_con, decltype(args)...>(args...);
+        };
+        return boost::hana::unpack(boost::hana::reverse(dim), construct_);
     }
 
     friend inline auto
@@ -207,19 +206,19 @@ private:
 template <typename dtype, long long n_con, long long n_cov,
           GemDimension... dims>
 constexpr
-boost::hana::llong<sizeof...(dims)>
+boost::hana::ullong<sizeof...(dims)>
 TensorBase<dtype, n_con, n_cov, dims...>::order;
 
 template <typename dtype, long long n_con, long long n_cov,
           GemDimension... dims>
 constexpr
-boost::hana::llong<n_con>
+boost::hana::ullong<n_con>
 TensorBase<dtype, n_con, n_cov, dims...>::contravariants;
 
 template <typename dtype, long long n_con, long long n_cov,
           GemDimension... dims>
 constexpr
-boost::hana::llong<n_cov>
+boost::hana::ullong<n_cov>
 TensorBase<dtype, n_con, n_cov, dims...>::covariants;
 
 template <typename dtype, long long n_con, long long n_cov,

@@ -27,7 +27,7 @@ private:
 
 
 template <typename R, typename C>
-constexpr inline auto MatrixXd(const R & rows = 1_c, const C & cols = 1_c)
+constexpr inline auto MatrixXd(const R & rows = 1_u, const C & cols = 1_u)
 {
     auto dim1 = Dim(rows);
     auto dim2 = Dim(cols);

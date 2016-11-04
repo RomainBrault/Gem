@@ -54,7 +54,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang")
         ")
     # endif()
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
-    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "6.0.0")
+    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "7.0.0")
         message(WARNING "
     ### You appear to be using GCC ${CMAKE_CXX_COMPILER_VERSION},
     ### which is known to be unable to compile Gem.

@@ -4,94 +4,101 @@
 
 #include <gem/gem.hpp>
 
+#include <limits>
+
 using namespace gem;
 using namespace boost::hana;
 
 auto main(void) -> int
 {
-
     {
-        // Compile time to compile time
-        auto d = Dim(integral_c<int, 2>);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long, 2, 2>
-        >(d);
-    }
-
-    {
-        // Compile time to runtime
-        auto d = Dim(integral_c<int, 2>);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long, 4, 0>
-        >(d);
-    }
-
-    {
-        // Runtime time to compile time
         auto d = Dim(2);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long, 2, 2>
-        >(d);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
     }
 
     {
-        // Runtime time to runtime
         auto d = Dim(2);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long, 4, 0>
-        >(d);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
     }
 
     {
-        // Compile time to compile time
-        auto d = Dim(integral_c<int, 2>);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long>
-        >(d);
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
     }
 
     {
-        // Compile time to runtime
-        auto d = Dim(integral_c<int, 2>);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long>
-        >(d);
-    }
-
-    {
-        // Runtime time to compile time
-        auto d = Dim(2);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long>
-        >(d);
-    }
-
-    {
-        // Runtime time to runtime
-        auto d = Dim(2);
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long>
-        >(d);
-    }
-
-    {
-        // Runtime time to runtime
-        auto d = Dim(2);
-        boost::hana::to<unsigned int>(d);
-    }
-
-    {
-        // Runtime time to runtime
         auto d = Dim(2_c);
-        boost::hana::to<unsigned int>(d);
-        boost::hana::to<integral_constant_tag<unsigned int>>(d);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
     }
 
     {
-        // Integer
-        boost::hana::to<
-            gem::dimension_tag<unsigned long long>
-        >(2);
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
+    }
+
+    {
+        auto d = Dim(2_c);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
+    }
+
+    {
+        auto d = Dim(2);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            Dimension<unsigned int, 2, 4, 0>>::value);
+    }
+
+    {
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            decltype(d)>::value);
+    }
+
+    {
+        auto d = Dim(2_c);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            Dimension<unsigned int, 2, 4, 0>>::value);
+    }
+
+    {
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            Dimension<unsigned int, 2, 2, 2>>::value);
+    }
+
+    {
+        auto d = Dim(2_c);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            Dimension<unsigned int, 2, 2, 2>>::value);
+    }
+
+    {
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            integral_constant_tag<unsigned int>>::value);
+    }
+
+    {
+        auto d = Dim(2_c);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            integral_constant_tag<unsigned int>>::value);
+    }
+
+    {
+        auto d = Dim(2_u);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            integral_constant_tag<unsigned int>>::value);
+    }
+
+    {
+        auto d = Dim(2_c);
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            integral_constant_tag<unsigned int>>::value);
     }
 
 }
