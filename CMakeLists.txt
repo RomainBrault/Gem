@@ -142,6 +142,7 @@ add_custom_target(check
 # Setup subdirectories
 ##############################################################################
 enable_testing()
+add_subdirectory(doc)
 add_subdirectory(tests)
 
 ##############################################################################
