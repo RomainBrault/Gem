@@ -16,7 +16,7 @@ env:
     # GitHub token for pushing the documentation, logging in with the
     # Travis command line utility and so on. The token is stored in the
     # ${GITHUB_TOKEN} environment variable.
-    - secure: "4d097477db3d70e1441557b524d6d88af291ecc7"
+    - secure: "aVe7pczCkeK3F8dAXIth/cY4pAiSwkaJ6/oC3py2EXEejUTT74WpXAQFHmRdWhLmNcZi3lpYYq11ivGW1oAPAkQaR9qbbukvqmj30yUJljLtvz3hDmqbrbXB107iOkQ4u9WkgQUeh13tDHtS+/kp1rBjJbw+3KUwJ6ZVxY4xsnsZBwobZYvTA9x6GnF6rwTSFpHCqliXBnDz9bzaHBngJ2F3+BqX1bvLVUfXvzd2bRo60Jq34VkxFAHFkDHJ2OH9wWnGKMXXurnBNFpXlKlHqNKvSnlEbPmequ/ei6h040a5rZ1G5VbLckVJtKXgTXAMIr0xSN+prhcVUuOzT9SdZ8cd/m8MY9RDdEXdbFmXJRrvx/NXbhrWFjEJRtzApiDfA0DsOs2m+3H6T8aN0HRn136aNvtT/Wbi4tEpfrgHEEbY6IFkxTEEFTY+MZs8s27PDxy1LwjwVOYnv+LWVe+fJo2aNmmTkXUdPHKCM7TOfk+hD+P3YhE3T/KIdjFeZgWpOPbmpt6Uk730npwA2e6XNvpR0GCqz7EzADnRhpOJSzPN8KQvH5UBk/JU2nYjjTkPG/8LfEWeVNjxiOCo9cci7/rKRk3Eu4OtQwv5GRuoLgLhorWzlv0STWTodFx5EJvvOSnjmtruLMxhjrrOTC+eXjN/zd1fyYyyjD1mTtCQbG4="
 
   # Workaround for https://github.com/travis-ci/travis-ci/issues/4681
   matrix:
