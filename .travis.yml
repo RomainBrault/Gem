@@ -16,7 +16,7 @@ env:
     # GitHub token for pushing the documentation, logging in with the
     # Travis command line utility and so on. The token is stored in the
     # ${GITHUB_TOKEN} environment variable.
-    # - secure: "gikHKTxWGN9FnJ9m+F53Y5j7jWGAOKlL2ylcFM2o0KoXOkoNAK9bJpilNppRwWhgwpC3yTJDN0k7xh9I6Ec8L0G46Q2QZdtJ/NFvWbafpzQcrAg6+872yKlP8h3GHexwEDdAdxCv8g2HeavFrDcqynssI8IoIHyZmsR6Dwym+eo="
+    - secure: "gikHKTxWGN9FnJ9m+F53Y5j7jWGAOKlL2ylcFM2o0KoXOkoNAK9bJpilNppRwWhgwpC3yTJDN0k7xh9I6Ec8L0G46Q2QZdtJ/NFvWbafpzQcrAg6+872yKlP8h3GHexwEDdAdxCv8g2HeavFrDcqynssI8IoIHyZmsR6Dwym+eo="
 
   # Workaround for https://github.com/travis-ci/travis-ci/issues/4681
   matrix:
@@ -56,11 +56,6 @@ matrix:
     - os: linux
       env: UNIT_TESTS=true COMPILER=g++-6
       compiler: gcc
-
-    # Xcode 8
-    - os: osx
-      env: UNIT_TESTS=true BOOST_VERSION=default
-      osx_image: xcode8
 
     ##########################################################################
     # Generate the documentation

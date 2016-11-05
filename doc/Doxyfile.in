@@ -2,8 +2,9 @@
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.md or copy at http://boost.org/LICENSE_1_0.txt)
 
-PROJECT_NAME            = "gem"
+PROJECT_NAME            = "Gem"
 PROJECT_BRIEF           = "Syntaxic sugar for linear-algebra"
+PROJECT_LOGO            =
 PROJECT_NUMBER          = @gem_VERSION_STRING@
 
 STRIP_FROM_PATH         = @gem_SOURCE_DIR@/include
@@ -15,7 +16,8 @@ QUIET                   = YES
 
 # Resources
 OUTPUT_DIRECTORY        = @CMAKE_CURRENT_BINARY_DIR@
-INPUT                   = @gem_SOURCE_DIR@/include
+INPUT                   = @gem_SOURCE_DIR@/include \
+                          @gem_SOURCE_DIR@/doc/doc.hpp
 FILE_PATTERNS           = *.hpp
 RECURSIVE               = YES
 EXCLUDE                 =

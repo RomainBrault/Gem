@@ -14,11 +14,11 @@ operator"" _u() {
         boost::hana::ic_detail::parse<sizeof...(c)>({c...})>{};
 }
 
-} // namespage gem::litterals
+}  // namespage gem::litterals
 
 #if GEM_USE_LITTERALS == true
 using namespace boost::hana::literals;
 using namespace gem::literals;
-#endif // USE_GEM_LITTERALS
+#endif  // USE_GEM_LITTERALS
 
-#endif // LITTERALS_HPP_INCLUDED
+#endif  // LITTERALS_HPP_INCLUDED

@@ -78,6 +78,6 @@ BOOST_HANA_CONSTEXPR_LAMBDA auto geq =
         return boost::hana::greater_equal(x, y);
     });
 
-} // namespace gem
+}  // namespace gem
 
-#endif // DIMENSION_ORDERABLE_HPP_INCLUDED
+#endif  // DIMENSION_ORDERABLE_HPP_INCLUDED

@@ -153,8 +153,8 @@ install(DIRECTORY include/ DESTINATION include/
         PATTERN ".DS_Store" EXCLUDE)
 
 # We also install an optional pkg-config file.
-# configure_file(cmake/hana.pc.in hana.pc @ONLY)
-# install(FILES ${CMAKE_CURRENT_BINARY_DIR}/hana.pc DESTINATION lib/pkgconfig)
+configure_file(cmake/gem.pc.in gem.pc @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/gem.pc DESTINATION lib/pkgconfig)
 
 ##############################################################################
 # Setup the 'uninstall' target.

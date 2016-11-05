@@ -90,4 +90,4 @@ operator+(const gem::Dimension<T1, cv1, cv_max1, cv_min1> & d1,
 
 } // namespace gem
 
-#endif // DIMENSIONS_MONOID_HPP_INCLUDED
+#endif  // DIMENSIONS_MONOID_HPP_INCLUDED

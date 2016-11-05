@@ -29,8 +29,8 @@ configure_file(Doxyfile.in docset.doxygen @ONLY)
 add_custom_target(docset
     COMMAND ${DOXYGEN_EXECUTABLE} docset.doxygen
     COMMAND ${CMAKE_COMMAND} -E chdir _docset make
-    COMMAND ${CMAKE_COMMAND} -E remove_directory boost.hana.docset
-    COMMAND ${CMAKE_COMMAND} -E copy_directory _docset/boost.hana.docset boost.hana.docset
+    COMMAND ${CMAKE_COMMAND} -E remove_directory gem.docset
+    COMMAND ${CMAKE_COMMAND} -E copy_directory _docset/gem.docset gem.docset
     COMMAND ${CMAKE_COMMAND} -E remove_directory _docset
     COMMENT "Generating documentation Docset"
     VERBATIM

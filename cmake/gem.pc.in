@@ -1,0 +1,5 @@
+Name: Gem
+Description: Syntaxic sugar for linear algebra
+URL: https://github.com/RomainBrault/Gem
+Version: @gem_VERSION_STRING@
+Cflags: -I@CMAKE_INSTALL_PREFIX@/include

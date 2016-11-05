@@ -74,7 +74,7 @@ public:
     }
 };
 
-} // namespace boost::hana
+}  // namespace boost::hana
 
 namespace gem {
 
@@ -87,6 +87,6 @@ operator*(const gem::Dimension<T1, cv1, cv_max1, cv_min1> & d1,
     return boost::hana::mult(d1, d2);
 }
 
-} // namespace gem
+}  // namespace gem
 
-#endif // DIMENSIONS_RING_HPP_INCLUDED
+#endif  // DIMENSIONS_RING_HPP_INCLUDED

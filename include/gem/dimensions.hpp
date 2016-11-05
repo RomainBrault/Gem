@@ -1,3 +1,11 @@
+/*!
+@file
+Defines `gem::dimension`.
+
+@copyright Romain Brault 2013-2016
+(See accompanying file LICENSE)
+ */
+
 #ifndef DIMENSIONS_HPP_INCLUDED
 #define DIMENSIONS_HPP_INCLUDED
 
@@ -59,10 +67,6 @@ void load(auto & archive,
 } // namespace gem
 
 namespace cereal {
-// template<class Archive, typename T, T cv, T max_cv, T min_cv>
-// struct specialize<Archive, gem::Dimension<T, cv, max_cv, min_cv>,
-//                   cereal::specialization::member_load_save> {};
-// cereal no longer has any ambiguity when serializing Dimension
 
 template<class Archive, typename T, T cv, T max_cv, T min_cv>
 struct specialize<Archive, gem::Dimension<T, cv, max_cv, min_cv>,
@@ -83,7 +87,7 @@ struct Version<gem::Dimension<T, cv, max_cv, min_cv>>
         return GEM_VERSION;
     }
     static void unused() { (void)version; }
-}; /* end Version */
+};
 
 GemValidDimension {T, cv, max_cv, min_cv}
 const std::uint32_t Version<gem::Dimension<T, cv, max_cv, min_cv>>::version =
@@ -99,6 +103,9 @@ const std::uint32_t Version<gem::Dimension<T, cv, max_cv, min_cv>>::version =
 
 namespace gem {
 
+//////////////////////////////////////////////////////////////////////////
+// Runtime dimension
+//////////////////////////////////////////////////////////////////////////
 GemValidRuntimeDimension{T, cv, max_cv, min_cv}
 class Dimension<T, cv, max_cv, min_cv>
 {
@@ -177,7 +184,9 @@ constexpr boost::hana::integral_constant<T, min_cv>
 
 
 
-
+//////////////////////////////////////////////////////////////////////////
+// Compile time dimension
+//////////////////////////////////////////////////////////////////////////
 GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
 class Dimension<T, cv, max_cv, min_cv>
 {
@@ -284,7 +293,9 @@ Dim(const boost::hana::integral_constant<T, cv> &) noexcept
     return Dimension<typename std::make_unsigned_t<T>, cv, cv, cv> {};
 }
 
-namespace detail {
+}  // namespace gem
+
+namespace gem::detail {
 
 template <typename>
 struct is_gem_dimension_impl :
@@ -329,15 +340,13 @@ struct is_gem_compile_time_dimension_impl<gem::Dimension<T, cv,
 
 };
 
-} // namespace detail
-
-} // namespace gem
+}  // namespace gem::detail
 
 namespace std {
 
 template<GemDimension T>
 struct is_arithmetic<T> : true_type { };
 
-} // namespace std
+}  // namespace std
 
-#endif // DIMENSIONS_HPP_INCLUDED
+#endif  // !DIMENSIONS_HPP_INCLUDED

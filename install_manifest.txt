@@ -17,3 +17,4 @@
 /usr/local/include//gem/tensor_base.hpp
 /usr/local/include//gem/type.hpp
 /usr/local/include//gem/version.hpp
+/usr/local/lib/pkgconfig/gem.pc
