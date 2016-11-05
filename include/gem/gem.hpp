@@ -7,8 +7,8 @@ libraries.
 (See accompanying file LICENSE)
  */
 
-#ifndef BOOST_HANA_HPP
-#define BOOST_HANA_HPP
+#ifndef GEM_HPP_INCLUDED
+#define GEM_HPP_INCLUDED
 
 //! @defgroup group-concepts Concepts
 //! Concepts provided by the library.
@@ -20,9 +20,6 @@ namespace gem {
     namespace literals {}
 }
 #endif
-
-#ifndef GEM_HPP_INCLUDED
-#define GEM_HPP_INCLUDED
 
 #include <gem/version.hpp>
 #include <gem/litterals.hpp>

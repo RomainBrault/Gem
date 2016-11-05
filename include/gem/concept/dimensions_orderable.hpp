@@ -50,7 +50,7 @@ struct greater_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
     }
 };
 
-} // namespace boost::hana
+}  // namespace boost::hana
 
 namespace gem {
 
@@ -80,4 +80,4 @@ BOOST_HANA_CONSTEXPR_LAMBDA auto geq =
 
 }  // namespace gem
 
-#endif  // DIMENSION_ORDERABLE_HPP_INCLUDED
+#endif  // !DIMENSION_ORDERABLE_HPP_INCLUDED

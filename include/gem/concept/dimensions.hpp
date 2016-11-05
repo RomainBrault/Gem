@@ -99,4 +99,4 @@ concept bool GemConvertibleDimensionPair =
     GemValidDimension<T2, cv2, max2, min2> &&
     (min1 < max2);
 
-#endif  // CONCEPTS_DIMENSIONS_HPP_INCLUDED
+#endif  // !CONCEPTS_DIMENSIONS_HPP_INCLUDED

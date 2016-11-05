@@ -46,7 +46,7 @@ public:
 public:
 
     static constexpr BOOST_HANA_CONSTANT_CHECK_MSG(
-        (0_u < boost::hana::ullong_c<sizeof...(dims)>),
+        (boost::hana::ullong_c<0> < boost::hana::ullong_c<sizeof...(dims)>),
         "At least one dimension must be specified.");
 
     using base_t::tuple;
@@ -90,11 +90,13 @@ public:
         -> const std::enable_if_t<T_flag,
             decltype(base_t::operator[] (
                 boost::hana::ullong_c<sizeof...(dims)> -
-                                      idx + GEM_START_IDX - 1_u))> &
+                                      idx + GEM_START_IDX -
+                                      boost::hana::ullong_c<1>))> &
     {
         return base_t::operator[] (
             boost::hana::ullong_c<sizeof...(dims)> -
-                                  idx + GEM_START_IDX - 1_u);
+                                  idx + GEM_START_IDX -
+                                  boost::hana::ullong_c<1>);
     }
 
     constexpr inline auto operator [](const auto & idx) const noexcept

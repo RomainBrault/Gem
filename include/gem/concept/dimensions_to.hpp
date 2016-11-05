@@ -100,4 +100,4 @@ struct to_impl<gem::Dimension<T1, cv, max, min>, // To.
 
 }  // namespace boost::hana
 
-#endif  // DIMENSIONS_TO_HPP_INCLUDED
+#endif  // !DIMENSIONS_TO_HPP_INCLUDED

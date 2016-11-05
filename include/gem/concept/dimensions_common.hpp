@@ -64,4 +64,4 @@ public:
 
 } // namespace boost::hana
 
-#endif  // DIMENSIONS_COMMON_HPP_INCLUDED
+#endif  // !DIMENSIONS_COMMON_HPP_INCLUDED
