@@ -132,6 +132,6 @@ private:
     }
 };
 
-} // namespage gem
+}  // namespage gem
 
-#endif // DIMENSIONS_TUPLE_HPP_INCLUDED
+#endif  // !DIMENSIONS_TUPLE_HPP_INCLUDED

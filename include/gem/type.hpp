@@ -47,6 +47,6 @@ inline auto type(const T& t)
     return demangle(typeid(t).name());
 }
 
-} // namespace gem
+}  // namespace gem
 
-#endif // TYPE_HPP_INCLUDED
+#endif  // !TYPE_HPP_INCLUDED

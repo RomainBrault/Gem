@@ -32,6 +32,7 @@ addons:
 
 
 cache:
+  apt: true
   directories:
 
 matrix:

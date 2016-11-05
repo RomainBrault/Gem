@@ -233,6 +233,6 @@ constexpr boost::hana::type<typename TensorBase<dtype, n_con, n_cov,
                                                 dims...>::data_t>
 TensorBase<dtype, n_con, n_cov, dims...>::data_type;
 
-} // namespace gem
+}  // namespace gem
 
-#endif // TENSOR_BASE_HPP_INCLUDED
+#endif  // !TENSOR_BASE_HPP_INCLUDED

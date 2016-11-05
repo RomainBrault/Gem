@@ -23,4 +23,4 @@ namespace cereal {
 
 } // namespace cereal
 
-#endif // HANA_BINDER_HPP_INCLUDED
+#endif  // !HANA_BINDER_HPP_INCLUDED

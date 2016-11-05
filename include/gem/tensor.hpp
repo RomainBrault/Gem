@@ -34,6 +34,6 @@ constexpr inline auto MatrixXd(const R & rows = 1_u, const C & cols = 1_u)
     return TensorBase<double, 1, 1, decltype(dim1), decltype(dim2)>(dim1, dim2);
 }
 
-} // namespace gem
+}  // namespace gem
 
-#endif // TENSOR_HPP_INCLUDED
+#endif  // !TENSOR_HPP_INCLUDED

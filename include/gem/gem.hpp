@@ -25,4 +25,4 @@ namespace gem {
 #include <gem/litterals.hpp>
 #include <gem/tensor.hpp>
 
-#endif // GEM_HPP_INCLUDED
+#endif  // !GEM_HPP_INCLUDED

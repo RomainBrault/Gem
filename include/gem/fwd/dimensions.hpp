@@ -57,9 +57,9 @@ template <typename T>
 constexpr auto is_gem_compile_time_dimension_v =
     is_gem_compile_time_dimension<T>::value;
 
-} // namespace detail
+}  // namespace detail
 
-} // namespace gem
+}  // namespace gem
 
 template <class T>
 concept bool GemDimension = gem::detail::is_gem_dimension_v<T>;
@@ -72,4 +72,4 @@ template <class T>
 concept bool GemCompileTimeDimension =
     gem::detail::is_gem_compile_time_dimension_v<T>;
 
-#endif // FWD_DIMENSIONS_HPP_INCLUDED
+#endif  // !FWD_DIMENSIONS_HPP_INCLUDED
