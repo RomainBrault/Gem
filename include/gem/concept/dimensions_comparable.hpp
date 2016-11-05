@@ -32,7 +32,7 @@ struct not_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
     }
 };
 
-}
+}  // namespace boost::hana
 
 namespace gem {
 
@@ -48,6 +48,6 @@ BOOST_HANA_CONSTEXPR_LAMBDA auto neq =
         return boost::hana::not_equal(x, y);
     });
 
-} // namespace gem
+}  // namespace gem
 
 #endif  // !DIMENSIONS_COMPARABLE_HPP_INCLUDED
