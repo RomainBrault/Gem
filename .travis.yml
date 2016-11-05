@@ -16,7 +16,7 @@ env:
     # GitHub token for pushing the documentation, logging in with the
     # Travis command line utility and so on. The token is stored in the
     # ${GITHUB_TOKEN} environment variable.
-    - secure: "aVe7pczCkeK3F8dAXIth/cY4pAiSwkaJ6/oC3py2EXEejUTT74WpXAQFHmRdWhLmNcZi3lpYYq11ivGW1oAPAkQaR9qbbukvqmj30yUJljLtvz3hDmqbrbXB107iOkQ4u9WkgQUeh13tDHtS+/kp1rBjJbw+3KUwJ6ZVxY4xsnsZBwobZYvTA9x6GnF6rwTSFpHCqliXBnDz9bzaHBngJ2F3+BqX1bvLVUfXvzd2bRo60Jq34VkxFAHFkDHJ2OH9wWnGKMXXurnBNFpXlKlHqNKvSnlEbPmequ/ei6h040a5rZ1G5VbLckVJtKXgTXAMIr0xSN+prhcVUuOzT9SdZ8cd/m8MY9RDdEXdbFmXJRrvx/NXbhrWFjEJRtzApiDfA0DsOs2m+3H6T8aN0HRn136aNvtT/Wbi4tEpfrgHEEbY6IFkxTEEFTY+MZs8s27PDxy1LwjwVOYnv+LWVe+fJo2aNmmTkXUdPHKCM7TOfk+hD+P3YhE3T/KIdjFeZgWpOPbmpt6Uk730npwA2e6XNvpR0GCqz7EzADnRhpOJSzPN8KQvH5UBk/JU2nYjjTkPG/8LfEWeVNjxiOCo9cci7/rKRk3Eu4OtQwv5GRuoLgLhorWzlv0STWTodFx5EJvvOSnjmtruLMxhjrrOTC+eXjN/zd1fyYyyjD1mTtCQbG4="
+    - secure: "rPQJLI2cIaSf6RY90qb5/OGgjVuY213V9ZNxsSjbDtYwuxaN2LZwmx9Q1hc1nh4QkHRP1LvuttHvBVlg4xJeadnfYjS9QgM0ZfEjG/ulkRUCCtwpduMcolZidJSkjdIjNmDRz7yzOTVsJYc8hEMfoEK4PMDykehKdAvElrGEzwrnviRjPIqZMa6sL48BhxbFaLC3adqBCNqAQX/9gkLM8LC1sfne8krrnmS8571gIfzXwVHbQUIWhk4tu8uKI+Jr2+ZBMLiu/VYvTgXXdaZw/Z0zgQeLjyar9fyOzbiD4DUJjaoR9dXyitCRfRIX/nkGLp8nvH8PhF728xNM8JY2nvyVV8Ejqcq7uu9VDHlBTgVHudX3PvlvAG13llyPgfpxygzZVLxUXqkpnhba3JincfoKiuuGmRaiSB5k1FEZDctQCalnbNIO67SpLGybIs14CCoUg49clcORvGjSML9xb5L/kUbiQfz2sfdSg144tKEkI7VKB5NLaG0Ovxdm7n+JI5CZpp25TydvkwDBNs6Nq8uyZImwioJ8Plv0f/MITGPQOoYHo691vZwhveONRJQWpD11HeUwtBMHHRwQC+3NpmpIRWVaNggqlbuM05EJMERBSYIhiv/DfBRra5Xf441szhoxA/ArxJhLbaGqMbVkNLH556i4TTJc/cvFAycm/gU="
 
   # Workaround for https://github.com/travis-ci/travis-ci/issues/4681
   matrix:
@@ -139,7 +139,7 @@ script:
     if [[ "${CHECK_FORMATTING}" == "true" ]]; then
       # Find non-ASCII characters in headers
       hpps=$(find include doc -name \*\.hpp)
-      cpps=$(find test example experimental -name \*\.cpp)
+      cpps=$(find tests examples -name \*\.cpp)
       pcregrep --color='auto' -n "[\x80-\xFF]" ${hpps} ${cpps}
       if [[ $? -ne 1 ]]; then exit 1; fi
 
