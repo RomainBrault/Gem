@@ -1,11 +1,9 @@
 .. -*- mode: rst -*-
 
-|Travis|_
-
 .. |Travis| image:: https://travis-ci.org/RomainBrault/Gem.svg?branch=master
 .. _Travis: https://travis-ci.org/RomainBrault/Gem
 
-Gem
+Gem |Travis|_
 ============
 
 > Syntactic Sugar for Linear-Algebra
