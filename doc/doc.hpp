@@ -17,6 +17,7 @@ following commands from the root of the project
 
 @code{.sh}
 mkdir build && cd build
+export CXX=/path/to/g++-7
 cmake ..
 cmake --build . --target install
 @endcode
