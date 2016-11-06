@@ -57,7 +57,7 @@ matrix:
     ##########################################################################
     # GCC 6
     - os: linux
-      env: UNIT_TESTS=true COVERAGE=true COMPILER=g++-6 COVERAGE_COMPILER=gcov-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Coverage"
+      env: UNIT_TESTS=true COVERAGE=true COMPILER=g++-6 COVERAGE_COMPILER=gcov-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Coverage -Dgem_ENABLE_MEMCHECK=ON"
       compiler: gcc
 
     ##########################################################################
