@@ -57,7 +57,7 @@ matrix:
     ##########################################################################
     # GCC 6
     - os: linux
-      env: UNIT_TESTS=true COMPILER=g++-6
+      env: UNIT_TESTS=true COVERAGE=true COMPILER=g++-6 COVERAGE_COMPILER=gcov-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Coverage"
       compiler: gcc
 
     ##########################################################################
@@ -73,9 +73,6 @@ matrix:
     # - os: linux
     #   env: BENCHMARKS=true COMPILER=g++-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -DCTEST_OUTPUT_ON_FAILURE=true"
     #   compiler: gcc
-
-before_install:
-  - export CXX=gcc-6
 
 install:
   ############################################################################
@@ -141,7 +138,7 @@ before_script:
   # Go back to the root of the project and setup the build directory
   ############################################################################
   - cd ${TRAVIS_BUILD_DIR}
-  - (mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Coverage .. ${CMAKE_OPTIONS})
+  - (mkdir build && cd build && cmake .. ${CMAKE_OPTIONS})
 
 
 script:
@@ -238,8 +235,8 @@ script:
 
 after_success:
   - |
-    if [[ "${UNIT_TESTS}" == "true" ]]; then
-      coveralls --gcov gcov-6 --exclude hana --exclude cereal --exclude lib --exclude tests --gcov-options '\-lp'
+    if [[ "${COVERAGE}" == "true" ]]; then
+      coveralls --gcov ${COVERAGE_COMPILER} --exclude hana --exclude cereal --exclude lib --exclude tests --gcov-options '\-lp'
     fi
 
 notifications:
