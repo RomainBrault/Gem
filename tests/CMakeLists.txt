@@ -53,6 +53,7 @@ add_dependencies(tests test.headers)
 file(GLOB_RECURSE UNIT_TESTS "*.cpp")
 
 foreach(_file IN LISTS UNIT_TESTS)
+    include(CodeCoverage)
     gem_target_name_for(_target "${_file}")
     add_executable(${_target} EXCLUDE_FROM_ALL "${_file}")
     target_include_directories(${_target} PRIVATE _include)

@@ -47,10 +47,24 @@ if (gem_ENABLE_WERROR)
     gem_append_flag(gem_HAS_WX -WX)
 endif()
 
+if(BUILD_TYPE_LOWER STREQUAL "coverage")
+    # workaround necessary because CHECK_CXX_COMPILER_FLAG not only compiles, but also links,
+    # but while linking, it does not specify the flag, which in this case must also be present
+    # in the linker invocation. Without setting the flag here manually, the macro would fail
+    # while linking.
+    set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -coverage")
+    check_cxx_compiler_flag("" COMPILER_SUPPORTS_COVERAGE)
+    if(NOT COMPILER_SUPPORTS_COVERAGE)
+        message(FATAL_ERROR "Your compiler does not support compiling for code coverage")
+    endif()
+endif()
+
 # Other compiler flags
 gem_append_flag(gem_HAS_FDIAGNOSTICS_COLOR         -fdiagnostics-color)
 gem_append_flag(gem_HAS_FTEMPLATE_BACKTRACE_LIMIT  -ftemplate-backtrace-limit=0)
 gem_append_flag(gem_HAS_PEDANTIC                   -pedantic)
+gem_append_flag(gem_HAS_STDCXX11                   -std=c++11)
+gem_append_flag(gem_HAS_STDCXX14                   -std=c++14)
 gem_append_flag(gem_HAS_STDCXX17                   -std=c++1z)
 gem_append_flag(gem_HAS_QUNUSED_ARGUMENTS          -Qunused-arguments)
 gem_append_flag(gem_HAS_W                          -W)
@@ -59,6 +73,8 @@ gem_append_flag(gem_HAS_WEXTRA                     -Wextra)
 gem_append_flag(gem_HAS_WNO_UNUSED_LOCAL_TYPEDEFS  -Wno-unused-local-typedefs)
 gem_append_flag(gem_HAS_WWRITE_STRINGS             -Wwrite-strings)
 gem_append_flag(gem_HAS_CONCEPTS                   -fconcepts)
+
+
 
 ##############################################################################
 # Setup include paths. More include paths can be added in subdirectories.

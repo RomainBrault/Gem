@@ -21,7 +21,7 @@ while getopts 'cmifptvj:' flag; do
 	f) fflag=true ;;
 	p) pflag=true ;;
 	t) tflag=true ;;
-    v) verbose=1 ;;
+    v) verbose=2 ;;
     *) error "Unexpected option ${flag}" ;;
   esac
 done
@@ -38,7 +38,8 @@ cd build
 
 if $cflag ;
 	then
-		cmake -DCMAKE_BUILD_TYPE=Release ..
+        cmake -DCMAKE_BUILD_TYPE=Coverage ..
+		# cmake -DCMAKE_BUILD_TYPE=Release ..
 fi
 if $mflag;
 	then
