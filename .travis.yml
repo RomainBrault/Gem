@@ -33,6 +33,8 @@ addons:
 
 cache:
   apt: true
+  pip: true
+
   directories:
 
 matrix:
@@ -71,6 +73,9 @@ matrix:
     # - os: linux
     #   env: BENCHMARKS=true COMPILER=g++-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -DCTEST_OUTPUT_ON_FAILURE=true"
     #   compiler: gcc
+
+before_install:
+  - export CXX=gcc-6
 
 install:
   ############################################################################
@@ -234,7 +239,7 @@ script:
 after_success:
   - |
     if [[ "${UNIT_TESTS}" == "true" ]]; then
-      coveralls --exclude hana --exclude cereal --exclude lib --exclude tests --gcov-options '\-lp'
+      coveralls --gcov gcov-6 --exclude hana --exclude cereal --exclude lib --exclude tests --gcov-options '\-lp'
     fi
 
 notifications:
