@@ -1,8 +1,5 @@
-#include <cassert>
+#include <cstdlib>
 #include <boost/hana/assert.hpp>
-#include <boost/hana/core.hpp>
-
-#include <limits>
 
 #include <gem/gem.hpp>
 
@@ -13,7 +10,7 @@ auto main(void) -> int
 {
     {
 
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             Dimension<unsigned int, 2, 2, 2>>::value);
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
@@ -22,7 +19,7 @@ auto main(void) -> int
 
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             Dimension<unsigned int, 2, 2, 2>>::value);
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
@@ -30,102 +27,104 @@ auto main(void) -> int
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<unsigned int,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<unsigned int,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<unsigned int,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2u);
+        Dimension d {2u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             integral_constant<unsigned int, 2>>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             integral_constant<unsigned int, 2>>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             integral_constant<unsigned int, 2>>::value);
     }
 
     {
-        auto d = Dim(2u);
+        Dimension d {2u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<decltype(d),
             integral_constant<unsigned int, 2>>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<
             integral_constant<unsigned int, 2>,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<
             integral_constant<unsigned int, 2>,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<
             integral_constant<unsigned int, 2>,
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2u);
+        Dimension d {2u};
         BOOST_HANA_CONSTEXPR_CHECK(has_common<
             integral_constant<unsigned int, 2>,
             decltype(d)>::value);
     }
+
+    return EXIT_SUCCESS;
 }

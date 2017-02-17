@@ -7,6 +7,7 @@
 /usr/local/include//gem/concept/dimensions_orderable.hpp
 /usr/local/include//gem/concept/dimensions_ring.hpp
 /usr/local/include//gem/concept/dimensions_to.hpp
+/usr/local/include//gem/concept/dimensions_tuple.hpp
 /usr/local/include//gem/dimensions.hpp
 /usr/local/include//gem/dimensions_tuple.hpp
 /usr/local/include//gem/fwd/dimensions.hpp

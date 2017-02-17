@@ -36,6 +36,9 @@ cache:
   pip: true
 
   directories:
+    - ${HOME}/gcc-source
+    - ${TRAVIS_BUILD_DIR}/gcc-build
+    - ${HOME}/gcc-latest
 
 matrix:
   exclude:
@@ -57,14 +60,14 @@ matrix:
     ##########################################################################
     # GCC 6
     - os: linux
-      env: UNIT_TESTS=true COVERAGE=true COMPILER=g++-6 COVERAGE_COMPILER=gcov-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Coverage -Dgem_ENABLE_MEMCHECK=ON"
+      env: UNIT_TESTS=true COVERAGE=true COMPILER=g++-latest COVERAGE_COMPILER=gcov-latest CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Coverage -Dgem_ENABLE_MEMCHECK=ON"
       compiler: gcc
 
     ##########################################################################
     # Generate the documentation
     ##########################################################################
     - os: linux
-      env: DOCUMENTATION=true COMPILER=g++-6
+      env: DOCUMENTATION=true COMPILER=g++-latest
       compiler: gcc
 
     ##########################################################################
@@ -74,7 +77,23 @@ matrix:
     #   env: BENCHMARKS=true COMPILER=g++-6 CMAKE_OPTIONS="-DCMAKE_BUILD_TYPE=Release -DCTEST_OUTPUT_ON_FAILURE=true"
     #   compiler: gcc
 
+before_install:
+  ############################################################################
+  # Install gcc latest from svn
+  ############################################################################
+  - if [[ "${COMPILER}" == "g++-latest" ]]; then
+      svn checkout svn://gcc.gnu.org/svn/gcc/trunk ${HOME}/gcc-source
+      pushd gcc-source && ./contrib/download_prerequisites && popd
+      mkdir "{TRAVIS_BUILD_DIR}/gcc-build" && pushd {TRAVIS_BUILD_DIR}/gcc-build
+      $PWD/../gcc-source/configure --prefix=${HOME}/gcc-latest --enable-languages=c++
+      make && make install && popd
+      alias g++-latest='${HOME}/gcc-latest/bin/g++'
+      alias gcov-latest='${HOME}/gcc-latest/bin/gcov'
+      alias gcc-latest='${HOME}/gcc-latest/bin/gcc'
+    fi
+
 install:
+
   ############################################################################
   # All the dependencies are installed in ${TRAVIS_BUILD_DIR}/deps/
   ############################################################################

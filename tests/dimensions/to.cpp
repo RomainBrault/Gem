@@ -1,6 +1,6 @@
-#include <cassert>
+#include <cstdlib>
 #include <boost/hana/assert.hpp>
-#include <boost/hana/core.hpp>
+#include <boost/hana/integral_constant.hpp>
 
 #include <gem/gem.hpp>
 
@@ -10,93 +10,118 @@ using namespace boost::hana;
 auto main(void) -> int
 {
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             unsigned int>::value);
     }
 
     {
-        auto d = Dim(2);
+        Dimension d {2_c};
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            unsigned int>::value);
+    }
+
+    {
+        Dimension d {2};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             Dimension<unsigned int, 2, 4, 0>>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             decltype(d)>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             Dimension<unsigned int, 2, 4, 0>>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             Dimension<unsigned int, 2, 2, 2>>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             Dimension<unsigned int, 2, 2, 2>>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             integral_constant_tag<unsigned int>>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             integral_constant_tag<unsigned int>>::value);
     }
 
     {
-        auto d = Dim(2_u);
+        Dimension d {2_u};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             integral_constant_tag<unsigned int>>::value);
     }
 
     {
-        auto d = Dim(2_c);
+        Dimension d {2_c};
         BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
             integral_constant_tag<unsigned int>>::value);
     }
 
+    {
+        Dimension d {2_c};
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            CompileTimeDimensionTag<unsigned int>>::value);
+    }
+
+    {
+        Dimension d {2u};
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            RuntimeDimensionTag<unsigned int>>::value);
+    }
+
+    {
+        Dimension d {2_u};
+        BOOST_HANA_CONSTEXPR_CHECK(is_convertible<decltype(d),
+            RuntimeDimensionTag<unsigned int>>::value);
+    }
+
+    return EXIT_SUCCESS;
 }

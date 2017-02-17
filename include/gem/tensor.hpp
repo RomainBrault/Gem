@@ -1,5 +1,5 @@
-#ifndef TENSOR_HPP_INCLUDED
-#define TENSOR_HPP_INCLUDED
+#ifndef GEM_TENSOR_HPP_INCLUDED
+#define GEM_TENSOR_HPP_INCLUDED
 
 #include <gem/tensor_base.hpp>
 
@@ -8,6 +8,7 @@ namespace gem {
 template <typename dtype, long long n_con, long long n_cov, class... dims>
 class Tensor :
     public TensorBase<dtype, n_con, n_cov, dims...>
+    // public MemoryManager<dtype, n_con, n_cov, dims...>
 {
 
 public:
@@ -17,6 +18,12 @@ public:
 
     constexpr inline Tensor(const dims&... d) noexcept :
         base_t(d...), _memory(nullptr)
+    {
+
+    }
+
+protected:
+    inline ~Tensor(void) noexcept
     {
 
     }
@@ -36,4 +43,4 @@ constexpr inline auto MatrixXd(const R & rows = 1_u, const C & cols = 1_u)
 
 }  // namespace gem
 
-#endif  // !TENSOR_HPP_INCLUDED
+#endif  // !GEM_TENSOR_HPP_INCLUDED

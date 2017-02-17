@@ -1,13 +1,14 @@
-#ifndef DIMENSIONS_MONOID_HPP_INCLUDED
-#define DIMENSIONS_MONOID_HPP_INCLUDED
+#ifndef CONCEPTS_DIMENSIONS_MONOID_HPP_INCLUDED
+#define CONCEPTS_DIMENSIONS_MONOID_HPP_INCLUDED
 
 #include <limits>
 
+#include <boost/hana/assert.hpp>
 #include <boost/hana/zero.hpp>
 #include <boost/hana/plus.hpp>
 #include <boost/hana/less.hpp>
 
-#include <gem/concept/dimensions.hpp>
+#include <gem/fwd/dimensions.hpp>
 
 namespace boost::hana {
 
@@ -16,21 +17,19 @@ static constexpr
 auto safe_add(const T & v1, const T & v2)
 {
     return v1 < std::numeric_limits<T>::max() - v2 ?
-        v1 + v2 :
-        std::numeric_limits<T>::max();
+        v1 + v2 : std::numeric_limits<T>::max();
 }
 
-GemValidDimension {T, cv, max, min}
+gem::concepts::detail::Dimension {T, cv, max, min}
 struct zero_impl<gem::Dimension<T, cv, max, min>>
 {
-    static constexpr auto apply(void)
-        -> gem::Dimension<T, 0, 0, 0>
+    static constexpr auto apply(void) -> gem::Dimension<T, 0, 0, 0>
     {
         return {};
     }
 };
 
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+gem::concepts::detail::DimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
 struct plus_impl<gem::Dimension<T1, cv1, max1, min1>,
                  gem::Dimension<T2, cv2, max2, min2>>
 {
@@ -75,7 +74,7 @@ public:
     }
 };
 
-} // namespace boost::hana
+}  // namespace boost::hana
 
 namespace gem {
 
@@ -88,6 +87,6 @@ operator+(const gem::Dimension<T1, cv1, cv_max1, cv_min1> & d1,
     return boost::hana::plus(d1, d2);
 }
 
-} // namespace gem
+}  // namespace gem
 
-#endif  // !DIMENSIONS_MONOID_HPP_INCLUDED
+#endif  // !CONCEPTS_DIMENSIONS_MONOID_HPP_INCLUDED

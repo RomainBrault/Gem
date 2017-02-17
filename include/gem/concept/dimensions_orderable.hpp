@@ -1,83 +1,128 @@
-#ifndef DIMENSION_ORDERABLE_HPP_INCLUDED
-#define DIMENSION_ORDERABLE_HPP_INCLUDED
+#ifndef CONCEPTS_DIMENSION_ORDERABLE_HPP_INCLUDED
+#define CONCEPTS_DIMENSION_ORDERABLE_HPP_INCLUDED
 
 #include <boost/hana/less.hpp>
 #include <boost/hana/less_equal.hpp>
 #include <boost/hana/greater.hpp>
 #include <boost/hana/greater_equal.hpp>
 
-#include <gem/concept/dimensions.hpp>
-
-namespace boost::hana {
-
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
-struct less_impl<gem::Dimension<T1, cv1, max1, min1>,
-                 gem::Dimension<T2, cv2, max2, min2>>
-{
-    static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
-    {
-        return d1.value() < d2.value();
-    }
-};
-
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
-struct less_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
-                       gem::Dimension<T2, cv2, max2, min2>>
-{
-    static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
-    {
-        return d1.value() <= d2.value();
-    }
-};
-
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
-struct greater_impl<gem::Dimension<T1, cv1, max1, min1>,
-                    gem::Dimension<T2, cv2, max2, min2>>
-{
-    static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
-    {
-        return d1.value() > d2.value();
-    }
-};
-
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
-struct greater_equal_impl<gem::Dimension<T1, cv1, max1, min1>,
-                          gem::Dimension<T2, cv2, max2, min2>>
-{
-    static constexpr decltype(auto) apply(const auto& d1, const auto& d2)
-    {
-        return d1.value() >= d2.value();
-    }
-};
-
-}  // namespace boost::hana
+#include <gem/concept/dimensions_common.hpp>
+#include <gem/fwd/dimensions.hpp>
 
 namespace gem {
 
-BOOST_HANA_CONSTEXPR_LAMBDA auto le =
-    boost::hana::infix([](const auto& x, const auto& y) {
-        // this could be a more efficient implementation
-        return boost::hana::less(x, y);
-    });
+template <concepts::Dimension D1, concepts::Dimension D2>
+constexpr auto
+operator >=(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() >= d2.value();
+}
 
-BOOST_HANA_CONSTEXPR_LAMBDA auto leq =
-    boost::hana::infix([](const auto& x, const auto& y) {
-        // this could be a more efficient implementation
-        return boost::hana::less_equal(x, y);
-    });
+concepts::InvalidCommonDimensionPair {D1, D2}
+constexpr auto
+operator >=(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() >= d2.value();
+}
 
-BOOST_HANA_CONSTEXPR_LAMBDA auto ge =
-    boost::hana::infix([](const auto& x, const auto& y) {
-        // this could be a more efficient implementation
-        return boost::hana::greater(x, y);
-    });
+template <concepts::Dimension D1, concepts::detail::Integral T2>
+constexpr auto
+operator >=(const D1& d1, const T2& d2) noexcept
+{
+    return d1.value() >= d2;
+}
 
-BOOST_HANA_CONSTEXPR_LAMBDA auto geq =
-    boost::hana::infix([](const auto& x, const auto& y) {
-        // this could be a more efficient implementation
-        return boost::hana::greater_equal(x, y);
-    });
+template <concepts::detail::Integral T1, concepts::Dimension D2>
+constexpr auto
+operator >=(const T1& d1, const D2& d2) noexcept
+{
+    return d1 >= d2.value();
+}
+
+template <concepts::Dimension D1, concepts::Dimension D2>
+constexpr auto
+operator >(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() > d2.value();
+}
+
+concepts::InvalidCommonDimensionPair {D1, D2}
+constexpr auto
+operator >(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() > d2.value();
+}
+
+template <concepts::Dimension D1, concepts::detail::Integral T2>
+constexpr auto
+operator >(const D1& d1, const T2& d2) noexcept
+{
+    return d1.value() > d2;
+}
+
+template <concepts::detail::Integral T1, concepts::Dimension D2>
+constexpr auto
+operator >(const T1& d1, const D2& d2) noexcept
+{
+    return d1 > d2.value();
+}
+
+template <concepts::Dimension D1, concepts::Dimension D2>
+constexpr auto
+operator <=(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() <= d2.value();
+}
+
+concepts::InvalidCommonDimensionPair {D1, D2}
+constexpr auto
+operator <=(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() <= d2.value();
+}
+
+template <concepts::Dimension D1, concepts::detail::Integral T2>
+constexpr auto
+operator <=(const D1& d1, const T2& d2) noexcept
+{
+    return d1.value() <= d2;
+}
+
+template <concepts::detail::Integral T1, concepts::Dimension D2>
+constexpr auto
+operator <=(const T1& d1, const D2& d2) noexcept
+{
+    return d1 <= d2.value();
+}
+
+template <concepts::Dimension D1, concepts::Dimension D2>
+constexpr auto
+operator <(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() < d2.value();
+}
+
+concepts::InvalidCommonDimensionPair {D1, D2}
+constexpr auto
+operator <(const D1& d1, const D2& d2) noexcept
+{
+    return d1.value() < d2.value();
+}
+
+template <concepts::Dimension D1, concepts::detail::Integral T2>
+constexpr auto
+operator <(const D1& d1, const T2& d2) noexcept
+{
+    return d1.value() < d2;
+}
+
+template <concepts::detail::Integral T1, concepts::Dimension D2>
+constexpr auto
+operator <(const T1& d1, const D2& d2) noexcept
+{
+    return d1 < d2.value();
+}
 
 }  // namespace gem
 
-#endif  // !DIMENSION_ORDERABLE_HPP_INCLUDED
+#endif  // !CONCEPTS_DIMENSION_ORDERABLE_HPP_INCLUDED

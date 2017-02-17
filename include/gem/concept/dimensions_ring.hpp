@@ -1,12 +1,13 @@
-#ifndef DIMENSIONS_RING_HPP_INCLUDED
-#define DIMENSIONS_RING_HPP_INCLUDED
+#ifndef CONCEPTS_DIMENSIONS_RING_HPP_INCLUDED
+#define CONCEPTS_DIMENSIONS_RING_HPP_INCLUDED
 
 #include <limits>
 
+#include <boost/hana/assert.hpp>
 #include <boost/hana/one.hpp>
 #include <boost/hana/mult.hpp>
 
-#include <gem/concept/dimensions.hpp>
+#include <gem/fwd/dimensions.hpp>
 
 namespace boost::hana {
 
@@ -19,7 +20,7 @@ auto safe_mult(const T & v1, const T & v2)
         std::numeric_limits<T>::max();
 }
 
-GemValidDimension {T, cv, max, min}
+gem::concepts::detail::Dimension {T, cv, max, min}
 struct one_impl<gem::Dimension<T, cv, max, min>>
 {
     static constexpr auto apply(void)
@@ -29,7 +30,7 @@ struct one_impl<gem::Dimension<T, cv, max, min>>
     }
 };
 
-GemDimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
+gem::concepts::detail::DimensionPair {T1, cv1, max1, min1, T2, cv2, max2, min2}
 struct mult_impl<gem::Dimension<T1, cv1, max1, min1>,
                  gem::Dimension<T2, cv2, max2, min2>>
 {
@@ -89,4 +90,4 @@ operator*(const gem::Dimension<T1, cv1, cv_max1, cv_min1> & d1,
 
 }  // namespace gem
 
-#endif  // !DIMENSIONS_RING_HPP_INCLUDED
+#endif  // !CONCEPTS_DIMENSIONS_RING_HPP_INCLUDED

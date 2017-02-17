@@ -1,5 +1,5 @@
-#ifndef TYPE_HPP_INCLUDED
-#define TYPE_HPP_INCLUDED
+#ifndef GEM_TYPE_HPP_INCLUDED
+#define GEM_TYPE_HPP_INCLUDED
 
 #include <string>
 #include <typeinfo>
@@ -10,14 +10,14 @@
 #include <cxxabi.h>
 #endif
 
+#include <boost/hana/type.hpp>
+
 namespace gem {
 
 #ifdef __GNUG__
 
-inline auto demangle(const char* name)
-    -> std::string
+inline auto demangle(const char* name) -> std::string
 {
-
     int status;
 
     std::unique_ptr<char, void(*)(void*)> res {
@@ -30,10 +30,8 @@ inline auto demangle(const char* name)
 
 #else
 
-// does nothing if not g++
-inline auto demangle(const char* name)
-    -> std::string
-{
+inline auto demangle(const char* name) -> std::string
+{   // does nothing if not g++
     return name;
 }
 
@@ -43,10 +41,9 @@ template <class T>
 inline auto type(const T& t)
     -> std::string
 {
-
     return demangle(typeid(t).name());
 }
 
 }  // namespace gem
 
-#endif  // !TYPE_HPP_INCLUDED
+#endif  // !GEM_TYPE_HPP_INCLUDED

@@ -1,5 +1,5 @@
-#ifndef TENSOR_BASE_HPP_INCLUDED
-#define TENSOR_BASE_HPP_INCLUDED
+#ifndef GEM_TENSOR_BASE_HPP_INCLUDED
+#define GEM_TENSOR_BASE_HPP_INCLUDED
 
 #include <ostream>
 #include <string>
@@ -23,7 +23,7 @@
 namespace gem {
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 class TensorBase
 {
 
@@ -35,7 +35,7 @@ public:
     using dimension_tuple_common_t = typename dimension_tuple_t::common_t;
 
     template<typename n_dtype, long long n_n_con, long long n_n_cov,
-             GemDimension... n_dims>
+             gem::concepts::Dimension... n_dims>
     friend class TensorBase;
 
     friend class cereal::access;
@@ -163,14 +163,16 @@ public:
     operator <<(std::ostream& os, const TensorBase & tensor)
         -> std::ostream&
     {
-        os << "{";
+        os << "covariants: " << covariants << ", ";
+        os << "contravariants: " << contravariants << ", ";
+        os << "dimensions: {";
         boost::hana::for_each(
             boost::hana::drop_back(tensor.dim), [&](auto const& d){
                 os << d << ", ";
             }
         );
-        os << boost::hana::back(tensor.dim);
-        return os << "}";
+        os << boost::hana::back(tensor.dim) << '}';
+        return os;
     }
 
 private:
@@ -204,35 +206,35 @@ private:
 };
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 constexpr
 boost::hana::ullong<sizeof...(dims)>
 TensorBase<dtype, n_con, n_cov, dims...>::order;
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 constexpr
 boost::hana::ullong<n_con>
 TensorBase<dtype, n_con, n_cov, dims...>::contravariants;
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 constexpr
 boost::hana::ullong<n_cov>
 TensorBase<dtype, n_con, n_cov, dims...>::covariants;
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 constexpr boost::hana::type<typename TensorBase<dtype, n_con, n_cov,
                             dims...>::type_t>
 TensorBase<dtype, n_con, n_cov, dims...>::type;
 
 template <typename dtype, long long n_con, long long n_cov,
-          GemDimension... dims>
+          gem::concepts::Dimension... dims>
 constexpr boost::hana::type<typename TensorBase<dtype, n_con, n_cov,
                                                 dims...>::data_t>
 TensorBase<dtype, n_con, n_cov, dims...>::data_type;
 
 }  // namespace gem
 
-#endif  // !TENSOR_BASE_HPP_INCLUDED
+#endif  // !GEM_TENSOR_BASE_HPP_INCLUDED

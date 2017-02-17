@@ -6,11 +6,11 @@ Defines `gem::dimension`.
 (See accompanying file LICENSE)
  */
 
-#ifndef DIMENSIONS_HPP_INCLUDED
-#define DIMENSIONS_HPP_INCLUDED
+#ifndef GEM_DIMENSIONS_HPP_INCLUDED
+#define GEM_DIMENSIONS_HPP_INCLUDED
 
 #include <boost/hana/type.hpp>
-#include <boost/hana/integral_constant.hpp>
+#include <boost/hana/bool.hpp>
 
 #include <cereal/cereal.hpp>
 #include <cereal/details/util.hpp>
@@ -27,7 +27,7 @@ Defines `gem::dimension`.
 
 namespace gem {
 
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::CompileTimeDimension {T, cv, max_cv, min_cv}
 void save(auto & archive,
           const gem::Dimension<T, cv, max_cv, min_cv> & m)
 {
@@ -37,7 +37,7 @@ void save(auto & archive,
             cereal::make_nvp("real", 2));
 }
 
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::CompileTimeDimension {T, cv, max_cv, min_cv}
 void load(auto & archive,
           gem::Dimension<T, cv, max_cv, min_cv> & m,
           std::uint32_t version)
@@ -45,7 +45,7 @@ void load(auto & archive,
 
 }
 
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::RuntimeDimension {T, cv, max_cv, min_cv}
 void save(auto & archive,
           const gem::Dimension<T, cv, max_cv, min_cv> & m,
           std::uint32_t version)
@@ -56,7 +56,7 @@ void save(auto & archive,
             cereal::make_nvp("real", m.value()));
 }
 
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::RuntimeDimension {T, cv, max_cv, min_cv}
 void load(auto & archive,
           gem::Dimension<T, cv, max_cv, min_cv> & m,
           std::uint32_t const version)
@@ -74,7 +74,7 @@ struct specialize<Archive, gem::Dimension<T, cv, max_cv, min_cv>,
 
 namespace detail {
 
-GemValidDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::Dimension {T, cv, max_cv, min_cv}
 struct Version<gem::Dimension<T, cv, max_cv, min_cv>>
 {
     static const std::uint32_t version;
@@ -89,7 +89,7 @@ struct Version<gem::Dimension<T, cv, max_cv, min_cv>>
     static void unused() { (void)version; }
 };
 
-GemValidDimension {T, cv, max_cv, min_cv}
+gem::concepts::detail::Dimension {T, cv, max_cv, min_cv}
 const std::uint32_t Version<gem::Dimension<T, cv, max_cv, min_cv>>::version =
     Version<gem::Dimension<T, cv, max_cv, min_cv>>::registerVersion();
 
@@ -97,26 +97,51 @@ const std::uint32_t Version<gem::Dimension<T, cv, max_cv, min_cv>>::version =
 
 } // namespace cereal
 
-
-
-
+//////////////////////////////////////////////////////////////////////////
+// DimensionTag implementation
+//////////////////////////////////////////////////////////////////////////
 
 namespace gem {
 
+concepts::detail::UnsignedIntegral {T}
+struct DimensionTag
+{
+    using value_type = T;
+};
+
+concepts::detail::UnsignedIntegral {T}
+struct RuntimeDimensionTag :
+    DimensionTag<T>
+{
+
+};
+
+concepts::detail::UnsignedIntegral {T}
+struct CompileTimeDimensionTag :
+    DimensionTag<T>
+{
+
+};
+
+}  // namespace gem
+
 //////////////////////////////////////////////////////////////////////////
-// Runtime dimension
+// Runtime dimension implementation
 //////////////////////////////////////////////////////////////////////////
-GemValidRuntimeDimension{T, cv, max_cv, min_cv}
+namespace gem {
+
+concepts::detail::RuntimeDimension{T, cv, max_cv, min_cv}
 class Dimension<T, cv, max_cv, min_cv>
 {
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
+    using hana_tag = RuntimeDimensionTag<T>;
 
-    static constexpr boost::hana::type<dim_t> type {};
-    static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
-    static constexpr boost::hana::integral_constant<dim_t, max_cv> max {};
-    static constexpr boost::hana::integral_constant<dim_t, min_cv> min {};
+    static inline constexpr auto type {boost::hana::type_c<dim_t>};
+    static inline constexpr auto hint {boost::hana::integral_c<dim_t, cv>};
+    static inline constexpr auto max  {boost::hana::integral_c<dim_t, max_cv>};
+    static inline constexpr auto min  {boost::hana::integral_c<dim_t, min_cv>};
 
 public:
     constexpr inline Dimension(void) = delete;
@@ -124,8 +149,8 @@ public:
     constexpr inline Dimension(const T & rv) noexcept :
         _run_time {rv}
     {
-        BOOST_HANA_RUNTIME_CHECK(max_cv >= rv);
-        BOOST_HANA_RUNTIME_CHECK(rv >= min_cv);
+        BOOST_HANA_RUNTIME_CHECK(max_cv    >= _run_time);
+        BOOST_HANA_RUNTIME_CHECK(_run_time >= min_cv);
     }
 
     constexpr inline Dimension(const Dimension & d) noexcept :
@@ -165,45 +190,37 @@ private:
     T _run_time;
 };
 
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::type<T>
-    Dimension<T, cv, max_cv, min_cv>::type;
-
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, cv>
-    Dimension<T, cv, max_cv, min_cv>::hint;
-
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, max_cv>
-    Dimension<T, cv, max_cv, min_cv>::max;
-
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, min_cv>
-    Dimension<T, cv, max_cv, min_cv>::min;
-
-
-
+}  // namespace gem
 
 //////////////////////////////////////////////////////////////////////////
-// Compile time dimension
+// Compile time dimension implementation
 //////////////////////////////////////////////////////////////////////////
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
+namespace gem {
+
+gem::concepts::detail::CompileTimeDimension {T, cv, max_cv, min_cv}
 class Dimension<T, cv, max_cv, min_cv>
 {
 public:
     using type_t = Dimension<T, cv, max_cv, min_cv>;
     using dim_t = T;
+    using hana_tag = CompileTimeDimensionTag<T>;
 
-    static constexpr boost::hana::type<dim_t> type {};
-    static constexpr boost::hana::integral_constant<dim_t, cv> hint {};
-    static constexpr boost::hana::integral_constant<dim_t, max_cv> max {};
-    static constexpr boost::hana::integral_constant<dim_t, min_cv> min {};
+    static inline constexpr auto type {boost::hana::type_c<dim_t>};
+    static inline constexpr auto hint {boost::hana::integral_c<dim_t, cv>};
+    static inline constexpr auto max  {boost::hana::integral_c<dim_t, max_cv>};
+    static inline constexpr auto min  {boost::hana::integral_c<dim_t, min_cv>};
 
 public:
-
     constexpr inline Dimension(void) noexcept = default;
 
     constexpr inline Dimension(const T &) noexcept = delete;
+
+    template <typename T2>
+    constexpr inline
+    Dimension(const boost::hana::integral_constant<T2, cv> &) noexcept
+    {
+
+    }
 
     constexpr inline Dimension(const Dimension &) noexcept
     {
@@ -217,124 +234,31 @@ public:
 
     constexpr inline auto value(const auto & val) const = delete;
 
-    friend inline auto
-    operator <<(std::ostream& os, const Dimension & d)
-        -> std::ostream&
-    {
-        os << d.value();
-        return os;
-    }
+    // friend inline auto
+    // operator <<(std::ostream& os, const Dimension & d)
+    //     -> std::ostream&
+    // {
+    //     os << d.value();
+    //     return os;
+    // }
 };
-
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::type<T>
-    Dimension<T, cv, max_cv, min_cv>::type;
-
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, cv>
-    Dimension<T, cv, max_cv, min_cv>::hint;
-
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, max_cv>
-    Dimension<T, cv, max_cv, min_cv>::max;
-
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-constexpr boost::hana::integral_constant<T, min_cv>
-    Dimension<T, cv, max_cv, min_cv>::min;
-
-/* Constraint friendly (compile time) dimension constructors.
-   Takes care of cast. */
-template <typename T, T cv>
-constexpr inline auto
-Dim(const T & value) noexcept
-{
-    BOOST_HANA_CONSTANT_CHECK_MSG(boost::hana::false_c, "Incompatible type");
-}
-
-template <GemIntegral T>
-constexpr inline auto
-Dim(const T& value)
-{
-    using ust = std::make_unsigned_t<T>;
-    constexpr ust max {std::numeric_limits<std::make_unsigned_t<T>>::max()};
-    return Dimension<ust, (max - 1) / 2 + 1, max, 1> {
-        static_cast<ust>(value)
-    };
-}
-
-template <GemIntegral T, T cv_max>
-constexpr inline auto
-Dim(const T& value,
-    const boost::hana::integral_constant<T, cv_max>& max)
-{
-    using ust = std::make_unsigned_t<T>;
-    return Dimension<ust, (cv_max - 1) / 2 + 1, cv_max, 1> {
-        static_cast<ust>(value)
-    };
-}
-
-
-template <GemIntegral T, T cv_max, T cv_min>
-constexpr inline auto
-Dim(const T& value,
-    const boost::hana::integral_constant<T, cv_max>& max,
-    const boost::hana::integral_constant<T, cv_min>& min)
-{
-    using ust = std::make_unsigned_t<T>;
-    return Dimension<ust, (cv_max - cv_min) / 2 + cv_min, cv_max, cv_min> {
-        static_cast<ust>(value)
-    };
-}
-
-template <GemIntegral T, T cv>
-constexpr inline auto
-Dim(const boost::hana::integral_constant<T, cv> &) noexcept
-{
-    return Dimension<typename std::make_unsigned_t<T>, cv, cv, cv> {};
-}
 
 }  // namespace gem
 
+//////////////////////////////////////////////////////////////////////////
+// Dimensions traits implementation
+//////////////////////////////////////////////////////////////////////////
 namespace gem::detail {
 
 template <typename>
-struct is_gem_dimension_impl :
+struct is_dimension_impl :
     boost::hana::false_
 {
 
 };
 
-GemValidDimension {T, cv, max_cv, min_cv}
-struct is_gem_dimension_impl<gem::Dimension<T, cv, max_cv, min_cv>> :
-    boost::hana::true_
-{
-
-};
-
-template <typename>
-struct is_gem_runtime_dimension_impl :
-    boost::hana::false_
-{
-
-};
-
-GemValidRuntimeDimension {T, cv, max_cv, min_cv}
-struct is_gem_runtime_dimension_impl<gem::Dimension<T, cv, max_cv, min_cv>> :
-    boost::hana::true_
-{
-
-};
-
-template <typename>
-struct is_gem_compile_time_dimension_impl :
-    boost::hana::false_
-{
-
-};
-
-GemValidCompileTimeDimension {T, cv, max_cv, min_cv}
-struct is_gem_compile_time_dimension_impl<gem::Dimension<T, cv,
-                                                         max_cv, min_cv>> :
+gem::concepts::detail::Dimension {T, cv, max, min}
+struct is_dimension_impl<gem::Dimension<T, cv, max, min>> :
     boost::hana::true_
 {
 
@@ -342,11 +266,4 @@ struct is_gem_compile_time_dimension_impl<gem::Dimension<T, cv,
 
 }  // namespace gem::detail
 
-namespace std {
-
-template<GemDimension T>
-struct is_arithmetic<T> : true_type { };
-
-}  // namespace std
-
-#endif  // !DIMENSIONS_HPP_INCLUDED
+#endif  // !GEM_DIMENSIONS_HPP_INCLUDED

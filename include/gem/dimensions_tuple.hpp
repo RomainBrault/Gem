@@ -1,36 +1,41 @@
-#ifndef DIMENSIONS_TUPLE_HPP_INCLUDED
-#define DIMENSIONS_TUPLE_HPP_INCLUDED
+#ifndef GEM_DIMENSIONS_TUPLE_HPP_INCLUDED
+#define GEM_DIMENSIONS_TUPLE_HPP_INCLUDED
 
 #define BOOST_HANA_CONFIG_ENABLE_STRING_UDL
 
 #include <type_traits>
 
+#include <boost/hana/assert.hpp>
+#include <boost/hana/integral_constant.hpp>
 #include <boost/hana/minus.hpp>
 #include <boost/hana/tuple.hpp>
 #include <boost/hana/transform.hpp>
 #include <boost/hana/fold.hpp>
 #include <boost/hana/string.hpp>
 
-#include <gem/dimensions.hpp>
-#include <gem/fwd/dimensions_tuple.hpp>
+#include <cereal/cereal.hpp>
+
 #include <gem/litterals.hpp>
+#include <gem/fwd/dimensions_tuple.hpp>
 
 namespace gem {
 
-template <bool T_flag, long long n_con, long long n_cov, GemDimension... dims>
+
+gem::concepts::DimensionTuple {T_flag, n_con, n_cov, ...dims}
 class DimensionTuple :
     public boost::hana::tuple<dims...>
 {
 private:
 
-    template <GemDimension d1, GemDimension... rd>
+    template <gem::concepts::Dimension d1, gem::concepts::Dimension... rd>
     struct gem_dim_common_type {
         using type =
             std::common_type_t<typename d1::dim_t,
                                typename gem_dim_common_type<rd...>::type>;
     };
 
-    template <GemDimension d1>
+    // template <gem::concepts::Dimension d1>
+    gem::concepts::Dimension {d1}
     struct gem_dim_common_type<d1> {
         using type = typename d1::dim_t;
     };
@@ -46,7 +51,8 @@ public:
 public:
 
     static constexpr BOOST_HANA_CONSTANT_CHECK_MSG(
-        (boost::hana::ullong_c<0> < boost::hana::ullong_c<sizeof...(dims)>),
+        (boost::hana::ullong_c<0> <
+         boost::hana::ullong_c<sizeof...(dims)>),
         "At least one dimension must be specified.");
 
     using base_t::tuple;
@@ -54,7 +60,7 @@ public:
     constexpr inline auto
     value(void) const noexcept
     {
-        auto _value = [](auto && d) {
+        constexpr auto _value = [](auto && d) {
             return d.value();
         };
         return boost::hana::transform(*this, _value);
@@ -134,4 +140,4 @@ private:
 
 }  // namespage gem
 
-#endif  // !DIMENSIONS_TUPLE_HPP_INCLUDED
+#endif  // !GEM_DIMENSIONS_TUPLE_HPP_INCLUDED

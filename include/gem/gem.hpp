@@ -18,11 +18,16 @@ libraries.
 namespace gem {
     //! Namespace containing C++14 user-defined literals provided by Gem.
     namespace literals {}
+
+    //! Namespace containing concept technical specification provided by Gem.
+    namespace concept {}
 }
 #endif
 
 #include <gem/version.hpp>
 #include <gem/litterals.hpp>
+#include <gem/dimensions.hpp>
+#include <gem/dimensions_tuple.hpp>
 #include <gem/tensor.hpp>
 
 #endif  // !GEM_HPP_INCLUDED
